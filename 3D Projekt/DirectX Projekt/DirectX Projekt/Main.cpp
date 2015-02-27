@@ -1,36 +1,16 @@
-#include <windows.h>
-#include <stdio.h>
-#include <d3dcompiler.h>
-#include <d3d11.h>
-#include <DirectXMath.h>
-#include <DirectXMathMatrix.inl>
-#include <Windows.h>
-#include <string.h>
-#include <memory.h>
+#include "main.h"
 
-using namespace DirectX;
+int arnold = 5;
 
-#pragma comment(lib,"d3d11.lib")
-#pragma comment(lib,"d3dcompiler.lib")
+namespace
+{
+	Main*pMain; // pekare till applikationen
+}
 
-HWND InitWindow(HINSTANCE hInstance);
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-
-HRESULT CreateDirect3DContext(HWND wndHandle);
-
-ID3D11Device* gDevice = nullptr;
-ID3D11DeviceContext* gDeviceContext = nullptr;
-
-ID3D11InputLayout* gVertexLayout = nullptr;
-
-ID3D11Buffer* VertexBuffer = nullptr;
-
-ID3D11VertexShader* gVertexShader = nullptr;
-ID3D11PixelShader* gPixelShader = nullptr;
-ID3D11GeometryShader* gGeometryShader = nullptr;
-
-int test = 0;
-
+LRESULT CALLBACK Main::CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	return pMain->WndProc(hWnd, message, wParam, lParam);
+}
 
 
 HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
@@ -76,8 +56,9 @@ HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR 
 }
 
 
-void CreateShaders()
+void Main::CreateShaders()
 {
+
 	//------------VertexShader-----------------------------------------------------------------------------------------------------------
 	ID3DBlob* pVS = nullptr;
 	CompileShader(L"VertexShader.hlsl", "VS_main", "vs_5_0", &pVS);
@@ -85,14 +66,14 @@ void CreateShaders()
 	gDevice->CreateVertexShader(pVS->GetBufferPointer(), pVS->GetBufferSize(), nullptr, &gVertexShader);
 	
 	
-	//Create input layout
+	//------------Create input layout-----------------------------------------------------------------------------------------------
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 
 	};
-
+	
 	gDevice->CreateInputLayout(inputDesc, ARRAYSIZE(inputDesc), pVS->GetBufferPointer(), pVS->GetBufferSize(), &gVertexLayout);
 	pVS->Release();
 	//--------------PixelShader----------------------------------------------------------------------------------------------------------------
@@ -112,16 +93,56 @@ void CreateShaders()
 }
 
 //--------------------------Vertex Buffer--------------------------------------
-D3D11_BUFFER_DESC vBufferDesc;
-memset(&vBufferDesc, 0, sizeof(vBufferDesc));
-vBufferDesc.BíndFlags = D3D11_BIND_VERTEX_BUFFER;
-vBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-vBufferDesc.ByteWidth = sizeof();
+
+
+void Main::CreateBuffers()
+{
+
+	struct TriangleVertex
+	{
+		float x, y, z;
+		float r, g, b;
+		float Nx, Ny, Nz;
+	}
+	triangleVertices[4] =
+	{
+		-0.5f, -0.5f, 0.0f,	//v0 pos
+		0.0f, 1.0f, 0.0f, 	//v0 Color
+		0.0f, 0.0f, -1.0f,
+
+
+		-0.5f, 0.5f, 0.0f,	//v1
+		0.0f, 0.0f, 1.0f, 	//v1 
+		0.0f, 0.0f, -1.0f,
+
+
+		0.5f, -0.5f, 0.0f, //v2
+		1.0f, 1.0f, 0.0f,	//
+		0.0f, 0.0f, -1.0f,
+
+
+		0.5f, 0.5f, 0.0f, //v3
+		1.0f, 0.0f, 0.0f,	
+		0.0f, 0.0f, -1.0f
 
 
 
+	};
 
-void SetViewport()
+	D3D11_BUFFER_DESC vBufferDesc;
+	memset(&vBufferDesc, 0, sizeof(vBufferDesc));
+	vBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vBufferDesc.ByteWidth = sizeof(triangleVertices);
+
+	D3D11_SUBRESOURCE_DATA data;
+	data.pSysMem = triangleVertices;
+	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
+
+}
+
+
+void Main::SetViewport()
 {
 	D3D11_VIEWPORT vp;
 	vp.Height = (float)480;
@@ -130,18 +151,52 @@ void SetViewport()
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
-	gDevice->RSSetViewports(1, &vp);
+	gDeviceContext->RSSetViewports(1, &vp);
+}
+
+void Main::Render()
+{
+	float clearColor[] = { 0, 0, 0, 1 };
+	gDeviceContext->ClearRenderTargetView(gBackbufferRTV, clearColor);
+	gDeviceContext->ClearDepthStencilView(gDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	//Render Quad
+	UINT32 vertexSize = sizeof(float) * 9;
+	UINT32 offset = 0;
+	gDeviceContext->IASetInputLayout(gVertexLayout);
+	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	//Set Shaders and texture
+	gDeviceContext->HSSetShader(nullptr, nullptr, 0);
+	gDeviceContext->DSSetShader(nullptr, nullptr, 0);
+	gDeviceContext->VSSetShader(gVertexShader, nullptr, 0);
+	gDeviceContext->GSSetShader(gGeometryShader, nullptr, 0);
+	gDeviceContext->PSSetShader(gPixelShader, nullptr, 0);
+	gDeviceContext->PSSetShaderResources(0, 1, &gTextureView);
+
+	//Draw Object with 4 vertices
+	gDeviceContext->Draw(4, 0);
+
 }
 
 
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int Main::wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	MSG msg = { 0 };
 	HWND wndHandle = InitWindow(hInstance);
 
 	if (wndHandle)
 	{
+		CreateDirect3DContext(wndHandle);
+
+		SetViewport();
+
+		CreateShaders();
+
+		CreateBuffers();
+
 		ShowWindow(wndHandle, nCmdShow);
 
 		while (WM_QUIT != msg.message)
@@ -153,9 +208,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			}
 			else
 			{
-				// update/render goes here
+				Render(); //Rendera
+				gSwapChain->Present(0, 0); //Växla front- och back-buffer
 			}
 		}
+
+		gVertexBuffer->Release();
+		//gConstantBuffer->Release();
+		gVertexLayout->Release();
+		gVertexShader->Release();
+		gPixelShader->Release();
+
+		gBackbufferRTV->Release();
+		gSwapChain->Release();
+		gDevice->Release();
+		gDeviceContext->Release();
+
+		gTextureView->Release();
+		gDepthStencilBuffer->Release();
+		gDepthStencilView->Release();
+
 
 		DestroyWindow(wndHandle);
 	}
@@ -163,22 +235,22 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	return (int)msg.wParam;
 }
 
-HWND InitWindow(HINSTANCE hInstance)
+HWND Main::InitWindow(HINSTANCE hInstance)
 {
 	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = WndProc;
+	wcex.lpfnWndProc = CallWndProc;
 	wcex.hInstance = hInstance;
-	wcex.lpszClassName = L"BasicWindow";
+	wcex.lpszClassName = L"DirectX 3D Projekt";
 	if (!RegisterClassEx(&wcex))
 		return false;
 
-	RECT rc = { 0, 0, 800, 600 };
+	RECT rc = { 0, 0, 640, 480 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	HWND handle = CreateWindow(
-		L"BasicWindow",
+		L"DirectX 3D Projekt",
 		L"DirectX 3D Projekt",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
@@ -193,7 +265,7 @@ HWND InitWindow(HINSTANCE hInstance)
 	return handle;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -204,3 +276,75 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
+
+
+
+
+HRESULT Main::CreateDirect3DContext(HWND wndHandle)
+{
+	//create a struct to hold inforamtion about the swap chain
+	DXGI_SWAP_CHAIN_DESC scd;
+
+	//Clear out the struct for use
+	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+
+	//fill the swap chain description struct
+	scd.BufferCount = 1;                                    // one back buffer
+	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
+	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used
+	scd.OutputWindow = wndHandle;                           // the window to be used
+	scd.SampleDesc.Count = 1;                               // how many multisamples
+	scd.Windowed = TRUE;									// windowed/full-screen mode
+
+
+	//create a device, device context and swap chain using the information in the scd struct
+	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL,
+		D3D_DRIVER_TYPE_HARDWARE,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		D3D11_SDK_VERSION,
+		&scd,
+		&gSwapChain,
+		&gDevice,
+		NULL,
+		&gDeviceContext);
+
+	if (SUCCEEDED(hr)){
+
+		// get the address of the back buffer
+		ID3D11Texture2D* pBackBuffer = nullptr;
+		gSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+
+		// use the back buffer address to create the render target
+		gDevice->CreateRenderTargetView(pBackBuffer, NULL, &gBackbufferRTV);
+		pBackBuffer->Release();
+		
+		//DepthBuffer
+		D3D11_TEXTURE2D_DESC depthStencilDesc;
+		ZeroMemory(&depthStencilDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		depthStencilDesc.Width = 640;
+		depthStencilDesc.Height = 480;
+		depthStencilDesc.MipLevels = 1;
+		depthStencilDesc.ArraySize = 1;
+		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilDesc.SampleDesc.Count = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.CPUAccessFlags = 0;
+		depthStencilDesc.MiscFlags = 0;
+
+		HRESULT hr1 = gDevice->CreateTexture2D(&depthStencilDesc, NULL, &gDepthStencilBuffer);
+		HRESULT hr2 = gDevice->CreateDepthStencilView(gDepthStencilBuffer, NULL, &gDepthStencilView);
+
+
+
+		// set the render target as the back buffer
+		gDeviceContext->OMSetRenderTargets(1, &gBackbufferRTV, gDepthStencilView);
+	}
+	return hr;
+
+}
+
