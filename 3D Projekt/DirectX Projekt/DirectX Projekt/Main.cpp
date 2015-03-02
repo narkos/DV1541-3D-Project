@@ -1,17 +1,40 @@
-#include "main.h"
+#include <windows.h>
+#include <Windows.h>
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
+#include <DirectXMathMatrix.inl>
+#include <string.h>
+#include "fps.h"
+#include "timer.h"
+#include <string.h>
 
-int arnold = 5;
 
-namespace
-{
-	Main*pMain; // pekare till applikationen
-}
+using namespace DirectX;
 
-LRESULT CALLBACK Main::CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	return pMain->WndProc(hWnd, message, wParam, lParam);
-}
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"d3dcompiler.lib")
 
+HRESULT CreateDirect3DContext(HWND wndHandle);
+HWND InitWindow(HINSTANCE hInstance);
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+
+IDXGISwapChain* gSwapChain = nullptr;
+ID3D11Device* gDevice = nullptr;
+ID3D11DeviceContext* gDeviceContext = nullptr;
+ID3D11RenderTargetView* gBackbufferRTV = nullptr;
+ID3D11ShaderResourceView* gTextureView = nullptr;
+
+ID3D11InputLayout* gVertexLayout = nullptr;
+ID3D11DepthStencilView* gDepthStencilView = nullptr;
+ID3D11Texture2D* gDepthStencilBuffer = nullptr;
+
+ID3D11Buffer* gVertexBuffer = nullptr;
+
+ID3D11VertexShader* gVertexShader = nullptr;
+ID3D11PixelShader* gPixelShader = nullptr;
+ID3D11GeometryShader* gGeometryShader = nullptr;
 
 HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
 {
@@ -56,7 +79,7 @@ HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR 
 }
 
 
-void Main::CreateShaders()
+void CreateShaders()
 {
 
 	//------------VertexShader-----------------------------------------------------------------------------------------------------------
@@ -92,10 +115,62 @@ void Main::CreateShaders()
 	
 }
 
-//--------------------------Vertex Buffer--------------------------------------
+struct MatrixBuffer
+{
+	XMMATRIX worldMatrix;
+	XMMATRIX viewMatrix;
+	XMMATRIX projectionMatrix;
+};
+
+FpsClass* m_Fps;
+TimerClass* m_Timer;
+
+//void FpsCounter()
+//{
+//
+//
+//	// Code computes the avarage frame time and frames per second
+//
+//	static int frameCount = 0;
+//	static float timeElapsed = 0.0f;
+//
+//	//Function is beeing initialiased every time a frame is made
+//	frameCount++;
+//
+//	// Compute averages over one second period
+//	if ((m_Timer->GetTime() - timeElapsed) >= 0.50f)
+//	{
+//		float fps = (float)frameCount; // fps = framecount / 1
+//		float mspf = 1000.0f / fps;
+//		float timer = m_Timer->GetTime();
+//		// Makes a String for the window handler
+//		std::wostringstream outs;
+//
+//		outs.precision(6);
+//		outs <<  << L" "
+//			<< L"        FPS: " << fps << L" "
+//			<< L"        Frame Time: " << mspf << L" (ms)"
+//			<< L"        Time: " << timer << L" sec";
+//
+//		//Prints the text in the window handler
+//		SetWindowText(handle, outs.str().c_str());
+//
+//		// Reset for next fps.
+//		frameCount = 0;
+//		time += 0.25f;
+//
+//	}
+
+	
 
 
-void Main::CreateBuffers()
+
+//}
+
+
+
+
+void CreateBuffers()
 {
 
 	struct TriangleVertex
@@ -142,7 +217,7 @@ void Main::CreateBuffers()
 }
 
 
-void Main::SetViewport()
+void SetViewport()
 {
 	D3D11_VIEWPORT vp;
 	vp.Height = (float)480;
@@ -154,7 +229,7 @@ void Main::SetViewport()
 	gDeviceContext->RSSetViewports(1, &vp);
 }
 
-void Main::Render()
+void Render()
 {
 	float clearColor[] = { 0, 0, 0, 1 };
 	gDeviceContext->ClearRenderTargetView(gBackbufferRTV, clearColor);
@@ -173,7 +248,7 @@ void Main::Render()
 	gDeviceContext->VSSetShader(gVertexShader, nullptr, 0);
 	gDeviceContext->GSSetShader(gGeometryShader, nullptr, 0);
 	gDeviceContext->PSSetShader(gPixelShader, nullptr, 0);
-	gDeviceContext->PSSetShaderResources(0, 1, &gTextureView);
+	//gDeviceContext->PSSetShaderResources(0, 1, &gTextureView);
 
 	//Draw Object with 4 vertices
 	gDeviceContext->Draw(4, 0);
@@ -182,7 +257,7 @@ void Main::Render()
 
 
 
-int Main::wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	MSG msg = { 0 };
 	HWND wndHandle = InitWindow(hInstance);
@@ -224,9 +299,21 @@ int Main::wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLin
 		gDevice->Release();
 		gDeviceContext->Release();
 
-		gTextureView->Release();
+		//gTextureView->Release();
 		gDepthStencilBuffer->Release();
 		gDepthStencilView->Release();
+
+		if (m_Timer)
+		{
+			delete m_Timer;
+			m_Timer = 0;
+		}
+
+		if (m_Fps)
+		{
+			delete m_Fps;
+			m_Fps = 0;
+		}
 
 
 		DestroyWindow(wndHandle);
@@ -235,12 +322,12 @@ int Main::wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLin
 	return (int)msg.wParam;
 }
 
-HWND Main::InitWindow(HINSTANCE hInstance)
+HWND InitWindow(HINSTANCE hInstance)
 {
 	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = CallWndProc;
+	wcex.lpfnWndProc = WndProc;
 	wcex.hInstance = hInstance;
 	wcex.lpszClassName = L"DirectX 3D Projekt";
 	if (!RegisterClassEx(&wcex))
@@ -265,13 +352,24 @@ HWND Main::InitWindow(HINSTANCE hInstance)
 	return handle;
 }
 
-LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+
+	//Stäng programmet med escape!!
+	case WM_CHAR: //en tanget har tryckts ner
+		switch (wParam)
+		{
+		case VK_ESCAPE:
+			PostQuitMessage(0);
+			break;
+
+
+		}
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -280,7 +378,7 @@ LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-HRESULT Main::CreateDirect3DContext(HWND wndHandle)
+HRESULT CreateDirect3DContext(HWND wndHandle)
 {
 	//create a struct to hold inforamtion about the swap chain
 	DXGI_SWAP_CHAIN_DESC scd;

@@ -6,6 +6,8 @@
 #include <DirectXMathMatrix.inl>
 
 
+
+
 using namespace DirectX;
 
 #pragma comment(lib,"d3d11.lib")
@@ -25,7 +27,7 @@ public:
 	HRESULT CreateDirect3DContext(HWND wndHandle);
 	HWND InitWindow(HINSTANCE hInstance);
 	LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	//LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	
 	
 	

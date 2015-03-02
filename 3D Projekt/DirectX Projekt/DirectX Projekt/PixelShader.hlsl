@@ -7,17 +7,14 @@ SamplerState sampAni
 	AdressV = WRAP;
 };
 
-struct PS_OUT
+struct VS_OUT
 {
 	float4 pos : SV_POSITION;
-	float2 tex : TEXCOORD;
-	float3 wpos : POSITION;
+	float3 tex : TEXCOORD;
 	float4 nor : NORMAL;
 };
 
-float4 PS_main(PS_OUT input) : SV_Target
+float4 PS_main(VS_OUT input) : SV_Target
 {
-
-
-
+	return float4(input.tex, 1.0f);
 }
