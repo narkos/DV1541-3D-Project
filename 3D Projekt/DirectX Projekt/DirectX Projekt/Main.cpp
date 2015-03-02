@@ -5,9 +5,7 @@
 #include <DirectXMath.h>
 #include <DirectXMathMatrix.inl>
 #include <string.h>
-#include "fps.h"
-#include "timer.h"
-#include <string.h>
+#include "GameTime.h"
 
 
 using namespace DirectX;
@@ -122,50 +120,49 @@ struct MatrixBuffer
 	XMMATRIX projectionMatrix;
 };
 
-FpsClass* m_Fps;
-TimerClass* m_Timer;
 
-//void FpsCounter()
-//{
-//
-//
-//	// Code computes the avarage frame time and frames per second
-//
-//	static int frameCount = 0;
-//	static float timeElapsed = 0.0f;
-//
-//	//Function is beeing initialiased every time a frame is made
-//	frameCount++;
-//
-//	// Compute averages over one second period
-//	if ((m_Timer->GetTime() - timeElapsed) >= 0.50f)
-//	{
-//		float fps = (float)frameCount; // fps = framecount / 1
-//		float mspf = 1000.0f / fps;
-//		float timer = m_Timer->GetTime();
-//		// Makes a String for the window handler
-//		std::wostringstream outs;
-//
-//		outs.precision(6);
-//		outs <<  << L" "
-//			<< L"        FPS: " << fps << L" "
-//			<< L"        Frame Time: " << mspf << L" (ms)"
-//			<< L"        Time: " << timer << L" sec";
-//
-//		//Prints the text in the window handler
-//		SetWindowText(handle, outs.str().c_str());
-//
-//		// Reset for next fps.
-//		frameCount = 0;
-//		time += 0.25f;
-//
-//	}
+
+void FpsCounter()
+{
+
+
+	// Code computes the avarage frame time and frames per second
+
+	static int frameCount = 0;
+	static float timeElapsed = 0.0f;
+
+	//Function is beeing initialiased every time a frame is made
+	frameCount++;
+
+	// Compute averages over one second period
+	if ((() - timeElapsed) >= 0.50f)
+	{
+		float fps = (float)frameCount; // fps = framecount / 1
+		float mspf = 1000.0f / fps;
+		float timer = m_Timer->GetTime();
+		// Makes a String for the window handler
+		std::wostringstream outs;
+
+		outs.precision(6);
+		outs <<  << L" "
+			<< L"        FPS: " << fps << L" "
+			<< L"        Frame Time: " << mspf << L" (ms)"
+			<< L"        Time: " << timer << L" sec";
+
+		//Prints the text in the window handler
+		SetWindowText(handle, outs.str().c_str());
+
+		// Reset for next fps.
+		frameCount = 0;
+		time += 0.25f;
+
+	}
 
 	
 
 
 
-//}
+}
 
 
 

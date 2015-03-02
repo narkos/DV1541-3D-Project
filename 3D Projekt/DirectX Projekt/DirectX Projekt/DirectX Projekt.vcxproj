@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h" />
+    <ClInclude Include="GameTime.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="timer.h" />
   </ItemGroup>
