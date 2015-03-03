@@ -24,8 +24,8 @@ public:
 	int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow);
 	HRESULT CreateDirect3DContext(HWND wndHandle);
 	HWND InitWindow(HINSTANCE hInstance);
-	LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	//LRESULT CALLBACK WndProc(HWND , UINT , WPARAM , LPARAM);
+	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	
 	
 	
