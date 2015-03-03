@@ -4,14 +4,14 @@ int arnold = 5;
 
 namespace
 {
-	Main* pMain; // pekare till applikationen
+	Main*pMain; // pekare till applikationen
 }
 
-LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Main::CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return pMain->WndProc(hWnd, message, wParam, lParam);
 }
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
 
 HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
 {
@@ -182,21 +182,20 @@ void Main::Render()
 
 
 
-int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int Main::wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	Main* mainPointer =nullptr;
 	MSG msg = { 0 };
-	HWND wndHandle = mainPointer->InitWindow(hInstance);
+	HWND wndHandle = InitWindow(hInstance);
 
 	if (wndHandle)
 	{
-		mainPointer->CreateDirect3DContext(wndHandle);
+		CreateDirect3DContext(wndHandle);
 
-		mainPointer->SetViewport();
+		SetViewport();
 
-		mainPointer->CreateShaders();
+		CreateShaders();
 
-		mainPointer->CreateBuffers();
+		CreateBuffers();
 
 		ShowWindow(wndHandle, nCmdShow);
 
@@ -209,25 +208,25 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 			}
 			else
 			{
-				mainPointer->Render(); //Rendera
-				//gSwapChain->Present(0, 0); //Växla front- och back-buffer
+				Render(); //Rendera
+				gSwapChain->Present(0, 0); //Växla front- och back-buffer
 			}
 		}
 
-		//gVertexBuffer->Release();
-		////gConstantBuffer->Release();
-		//gVertexLayout->Release();
-		//gVertexShader->Release();
-		//gPixelShader->Release();
+		gVertexBuffer->Release();
+		//gConstantBuffer->Release();
+		gVertexLayout->Release();
+		gVertexShader->Release();
+		gPixelShader->Release();
 
-		//gBackbufferRTV->Release();
-		//gSwapChain->Release();
-		//gDevice->Release();
-		//gDeviceContext->Release();
+		gBackbufferRTV->Release();
+		gSwapChain->Release();
+		gDevice->Release();
+		gDeviceContext->Release();
 
-		//gTextureView->Release();
-		//gDepthStencilBuffer->Release();
-		//gDepthStencilView->Release();
+		gTextureView->Release();
+		gDepthStencilBuffer->Release();
+		gDepthStencilView->Release();
 
 
 		DestroyWindow(wndHandle);
@@ -266,13 +265,13 @@ HWND Main::InitWindow(HINSTANCE hInstance)
 	return handle;
 }
 
-LRESULT CALLBACK Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
-		break;	
+		break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
