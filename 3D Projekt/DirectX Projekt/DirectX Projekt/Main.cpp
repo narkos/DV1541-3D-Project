@@ -268,6 +268,8 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 	MSG msg = { 0 };
 	HWND wndHandle = InitWindow(hInstance);
 
+	mTimer.Reset();
+
 	if (wndHandle)
 	{
 		CreateDirect3DContext(wndHandle);
@@ -290,6 +292,8 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 			}
 			else
 			{
+				mTimer.Tick();
+				FpsCounter();
 				Render(); //Rendera
 				gSwapChain->Present(0, 0); //Växla front- och back-buffer
 			}
