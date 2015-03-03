@@ -6,9 +6,14 @@
 #include <DirectXMathMatrix.inl>
 #include <string.h>
 #include "GameTime.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 using namespace DirectX;
+using namespace std;
+
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")
@@ -33,6 +38,10 @@ ID3D11Buffer* gVertexBuffer = nullptr;
 ID3D11VertexShader* gVertexShader = nullptr;
 ID3D11PixelShader* gPixelShader = nullptr;
 ID3D11GeometryShader* gGeometryShader = nullptr;
+
+GameTimer mTimer;
+std::wstring mMainWndCaption;
+HWND handle;
 
 HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
 {
@@ -124,7 +133,7 @@ struct MatrixBuffer
 
 void FpsCounter()
 {
-
+	
 
 	// Code computes the avarage frame time and frames per second
 
@@ -135,32 +144,27 @@ void FpsCounter()
 	frameCount++;
 
 	// Compute averages over one second period
-	if ((() - timeElapsed) >= 0.50f)
+	if (((mTimer.TotalTime()) - timeElapsed) >= 0.50f)
 	{
 		float fps = (float)frameCount; // fps = framecount / 1
 		float mspf = 1000.0f / fps;
-		float timer = m_Timer->GetTime();
+		
 		// Makes a String for the window handler
 		std::wostringstream outs;
 
 		outs.precision(6);
-		outs <<  << L" "
+		outs << mMainWndCaption << L" "
 			<< L"        FPS: " << fps << L" "
-			<< L"        Frame Time: " << mspf << L" (ms)"
-			<< L"        Time: " << timer << L" sec";
-
+			<< L"        Frame Time: " << mspf << L" (ms)";
+			
 		//Prints the text in the window handler
 		SetWindowText(handle, outs.str().c_str());
 
 		// Reset for next fps.
 		frameCount = 0;
-		time += 0.25f;
+		timeElapsed += 0.25f;
 
 	}
-
-	
-
-
 
 }
 
@@ -250,7 +254,12 @@ void Render()
 	//Draw Object with 4 vertices
 	gDeviceContext->Draw(4, 0);
 
+
+
 }
+
+
+
 
 
 
@@ -268,6 +277,7 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 		CreateShaders();
 
 		CreateBuffers();
+
 
 		ShowWindow(wndHandle, nCmdShow);
 
@@ -300,18 +310,6 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 		gDepthStencilBuffer->Release();
 		gDepthStencilView->Release();
 
-		if (m_Timer)
-		{
-			delete m_Timer;
-			m_Timer = 0;
-		}
-
-		if (m_Fps)
-		{
-			delete m_Fps;
-			m_Fps = 0;
-		}
-
 
 		DestroyWindow(wndHandle);
 	}
@@ -332,8 +330,9 @@ HWND InitWindow(HINSTANCE hInstance)
 
 	RECT rc = { 0, 0, 640, 480 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	mMainWndCaption = L"Direct3D Projekt";
 
-	HWND handle = CreateWindow(
+		handle = CreateWindow(
 		L"DirectX 3D Projekt",
 		L"DirectX 3D Projekt",
 		WS_OVERLAPPEDWINDOW,
