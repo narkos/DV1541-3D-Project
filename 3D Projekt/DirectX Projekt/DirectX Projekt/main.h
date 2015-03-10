@@ -1,10 +1,19 @@
-#include <windows.h>
-#include <Windows.h>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <DirectXMathMatrix.inl>
+#ifndef MAIN_H
+#define MAIN_H
 
+//#include <windows.h>
+//#include <Windows.h>
+//#include <d3d11.h>
+//#include <d3dcompiler.h>
+//#include <DirectXMath.h>
+//#include <DirectXMathMatrix.inl>
+//#include <string.h>
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
+//#include <vector>
+#include "Root.h"
+#include "ObjImport.h"
 
 
 
@@ -52,5 +61,9 @@ protected:
 	ID3D11PixelShader* gPixelShader = nullptr;
 	ID3D11GeometryShader* gGeometryShader = nullptr;
 
+	ObjImport* o_import = nullptr;
 
 };
+
+
+#endif

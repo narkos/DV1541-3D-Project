@@ -9,8 +9,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
-
+//#include "ObjImport.cpp"
+#include "main.h"
+ 
+#include <vector>
 using namespace DirectX;
 using namespace std;
 
@@ -34,7 +36,7 @@ ID3D11DepthStencilView* gDepthStencilView = nullptr;
 ID3D11Texture2D* gDepthStencilBuffer = nullptr;
 
 ID3D11Buffer* gVertexBuffer = nullptr;
-
+ID3D11Buffer* gIndexBuffer = nullptr;
 ID3D11VertexShader* gVertexShader = nullptr;
 ID3D11PixelShader* gPixelShader = nullptr;
 ID3D11GeometryShader* gGeometryShader = nullptr;
@@ -168,9 +170,6 @@ void FpsCounter()
 
 }
 
-
-
-
 void CreateBuffers()
 {
 
@@ -201,8 +200,6 @@ void CreateBuffers()
 		1.0f, 0.0f, 0.0f,	
 		0.0f, 0.0f, -1.0f
 
-
-
 	};
 
 	D3D11_BUFFER_DESC vBufferDesc;
@@ -214,6 +211,12 @@ void CreateBuffers()
 	D3D11_SUBRESOURCE_DATA data;
 	data.pSysMem = triangleVertices;
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
+
+
+
+	//o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true);
+	
+	
 
 }
 
