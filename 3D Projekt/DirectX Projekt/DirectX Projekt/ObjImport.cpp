@@ -30,7 +30,7 @@ using namespace std;
 //		);
 //}
 //
-//XMFLOAT3 xsum(const XMFLOAT3 &a, const XMFLOAT3 &b)
+//XMFLOAT3 x_sum(const XMFLOAT3 &a, const XMFLOAT3 &b)
 //{
 //	return XMFLOAT3(a.x + b.x,
 //		a.y + b.y, a.z + b.z);
@@ -548,7 +548,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 
 			edge2 = XMFLOAT3(edge_x, edge_y, edge_z);
 
-			temp_unnormalized_FN = XMFLOAT3(cross(edge1, edge2));
+			temp_unnormalized_FN = XMFLOAT3(x_cross(edge1, edge2));
 			normal_temp.push_back(temp_unnormalized_FN);
 
 		}
@@ -559,7 +559,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 			{
 				if (o_indices[f * 3] == v || o_indices[(f * 3) + 1] == v || o_indices[(f * 3) + 2] == v)
 				{
-					tempSum = xsum(sumNormal, normal_temp[f]);
+					tempSum = x_sum(sumNormal, normal_temp[f]);
 					count_face_w_vert++;
 				}
 			}

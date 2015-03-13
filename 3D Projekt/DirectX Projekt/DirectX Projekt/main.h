@@ -12,9 +12,9 @@
 //#include <fstream>
 //#include <sstream>
 //#include <vector>
-#include "Root.h"
+//#include "Root.h"
 #include "ObjImport.h"
-
+#include "GameTime.h"
 
 
 using namespace DirectX;
@@ -32,19 +32,24 @@ public:
 	void CreateBuffers();
 	void SetViewport();
 	void Render();
-	int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow);
+	void FpsCounter();
+	//int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow);
 	HRESULT CreateDirect3DContext(HWND wndHandle);
 	HWND InitWindow(HINSTANCE hInstance);
 	LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	//LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob);
+	struct MatrixBuffer;
 	
-	
-	
-		
+	GameTimer mTimer;
+	std::wstring mMainWndCaption;
+	HWND handle;
 
-protected:
+	ObjImport* o_import = nullptr;
 
-	
+	Main();
+	~Main();
+
 	IDXGISwapChain* gSwapChain = nullptr;
 	ID3D11Device* gDevice = nullptr;
 	ID3D11DeviceContext* gDeviceContext = nullptr;
@@ -56,12 +61,16 @@ protected:
 	ID3D11Texture2D* gDepthStencilBuffer = nullptr;
 
 	ID3D11Buffer* gVertexBuffer = nullptr;
-
+	ID3D11Buffer* gIndexBuffer = nullptr;
 	ID3D11VertexShader* gVertexShader = nullptr;
 	ID3D11PixelShader* gPixelShader = nullptr;
 	ID3D11GeometryShader* gGeometryShader = nullptr;
 
-	ObjImport* o_import = nullptr;
+protected:
+
+
+
+
 
 };
 

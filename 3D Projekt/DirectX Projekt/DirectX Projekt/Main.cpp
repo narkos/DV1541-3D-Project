@@ -1,51 +1,58 @@
-#include <windows.h>
-#include <Windows.h>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
-#include <DirectXMathMatrix.inl>
-#include <string.h>
-#include "GameTime.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-//#include "ObjImport.cpp"
+//#include <windows.h>
+//#include <Windows.h>
+//#include <d3d11.h>
+//#include <d3dcompiler.h>
+//#include <DirectXMath.h>
+//#include <DirectXMathMatrix.inl>
+//#include <string.h>
+//#include "GameTime.h"
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
+////#include "ObjImport.cpp"
 #include "main.h"
  
 #include <vector>
 using namespace DirectX;
 using namespace std;
 
+//
+//#pragma comment(lib,"d3d11.lib")
+//#pragma comment(lib,"d3dcompiler.lib")
 
-#pragma comment(lib,"d3d11.lib")
-#pragma comment(lib,"d3dcompiler.lib")
+//HRESULT CreateDirect3DContext(HWND wndHandle);
+//HWND InitWindow(HINSTANCE hInstance);
+//LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+//
+//
+//IDXGISwapChain* gSwapChain = nullptr;
+//ID3D11Device* gDevice = nullptr;
+//ID3D11DeviceContext* gDeviceContext = nullptr;
+//ID3D11RenderTargetView* gBackbufferRTV = nullptr;
+//ID3D11ShaderResourceView* gTextureView = nullptr;
+//
+//ID3D11InputLayout* gVertexLayout = nullptr;
+//ID3D11DepthStencilView* gDepthStencilView = nullptr;
+//ID3D11Texture2D* gDepthStencilBuffer = nullptr;
+//
+//ID3D11Buffer* gVertexBuffer = nullptr;
+//ID3D11Buffer* gIndexBuffer = nullptr;
+//ID3D11VertexShader* gVertexShader = nullptr;
+//ID3D11PixelShader* gPixelShader = nullptr;
+//ID3D11GeometryShader* gGeometryShader = nullptr;
+//
+//GameTimer mTimer;
+//std::wstring mMainWndCaption;
+//HWND handle;
 
-HRESULT CreateDirect3DContext(HWND wndHandle);
-HWND InitWindow(HINSTANCE hInstance);
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+namespace { Main* mainName = 0; }
 
+LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	return mainName->WndProc(hWnd, message, wParam, lParam);
+}
 
-IDXGISwapChain* gSwapChain = nullptr;
-ID3D11Device* gDevice = nullptr;
-ID3D11DeviceContext* gDeviceContext = nullptr;
-ID3D11RenderTargetView* gBackbufferRTV = nullptr;
-ID3D11ShaderResourceView* gTextureView = nullptr;
-
-ID3D11InputLayout* gVertexLayout = nullptr;
-ID3D11DepthStencilView* gDepthStencilView = nullptr;
-ID3D11Texture2D* gDepthStencilBuffer = nullptr;
-
-ID3D11Buffer* gVertexBuffer = nullptr;
-ID3D11Buffer* gIndexBuffer = nullptr;
-ID3D11VertexShader* gVertexShader = nullptr;
-ID3D11PixelShader* gPixelShader = nullptr;
-ID3D11GeometryShader* gGeometryShader = nullptr;
-
-GameTimer mTimer;
-std::wstring mMainWndCaption;
-HWND handle;
-
-HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
+HRESULT Main::CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob)
 {
 	if (!srcFile || !entryPoint || !profile || !blob)
 		return E_INVALIDARG;
@@ -88,12 +95,12 @@ HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR 
 }
 
 
-void CreateShaders()
+void Main::CreateShaders()
 {
 
 	//------------VertexShader-----------------------------------------------------------------------------------------------------------
 	ID3DBlob* pVS = nullptr;
-	CompileShader(L"VertexShader.hlsl", "VS_main", "vs_5_0", &pVS);
+	Main::CompileShader(L"VertexShader.hlsl", "VS_main", "vs_5_0", &pVS);
 	
 	gDevice->CreateVertexShader(pVS->GetBufferPointer(), pVS->GetBufferSize(), nullptr, &gVertexShader);
 	
@@ -123,17 +130,17 @@ void CreateShaders()
 	pGS->Release();
 	
 }
+//
+//struct MatrixBuffer
+//{
+//	XMMATRIX worldMatrix;
+//	XMMATRIX viewMatrix;
+//	XMMATRIX projectionMatrix;
+//};
+//
 
-struct MatrixBuffer
-{
-	XMMATRIX worldMatrix;
-	XMMATRIX viewMatrix;
-	XMMATRIX projectionMatrix;
-};
 
-
-
-void FpsCounter()
+void Main::FpsCounter()
 {
 	
 
@@ -170,7 +177,7 @@ void FpsCounter()
 
 }
 
-void CreateBuffers()
+void Main::CreateBuffers()
 {
 
 	struct TriangleVertex
@@ -221,7 +228,7 @@ void CreateBuffers()
 }
 
 
-void SetViewport()
+void Main::SetViewport()
 {
 	D3D11_VIEWPORT vp;
 	vp.Height = (float)480;
@@ -233,7 +240,7 @@ void SetViewport()
 	gDeviceContext->RSSetViewports(1, &vp);
 }
 
-void Render()
+void Main::Render()
 {
 	float clearColor[] = { 0, 0, 0, 1 };
 	gDeviceContext->ClearRenderTargetView(gBackbufferRTV, clearColor);
@@ -268,20 +275,21 @@ void Render()
 
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
+	Main mainObject;
 	MSG msg = { 0 };
-	HWND wndHandle = InitWindow(hInstance);
+	HWND wndHandle = mainObject.InitWindow(hInstance);
 
-	mTimer.Reset();
+	mainObject.mTimer.Reset();
 
 	if (wndHandle)
 	{
-		CreateDirect3DContext(wndHandle);
+		mainObject.CreateDirect3DContext(wndHandle);
 
-		SetViewport();
+		mainObject.SetViewport();
 
-		CreateShaders();
+		mainObject.CreateShaders();
 
-		CreateBuffers();
+		mainObject.CreateBuffers();
 
 
 		ShowWindow(wndHandle, nCmdShow);
@@ -295,27 +303,14 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 			}
 			else
 			{
-				mTimer.Tick();
-				FpsCounter();
-				Render(); //Rendera
-				gSwapChain->Present(0, 0); //Växla front- och back-buffer
+				mainObject.mTimer.Tick();
+				mainObject.FpsCounter();
+				mainObject.Render(); //Rendera
+				mainObject.gSwapChain->Present(0, 0); //Växla front- och back-buffer
 			}
 		}
 
-		gVertexBuffer->Release();
-		//gConstantBuffer->Release();
-		gVertexLayout->Release();
-		gVertexShader->Release();
-		gPixelShader->Release();
 
-		gBackbufferRTV->Release();
-		gSwapChain->Release();
-		gDevice->Release();
-		gDeviceContext->Release();
-
-		//gTextureView->Release();
-		gDepthStencilBuffer->Release();
-		gDepthStencilView->Release();
 
 
 		DestroyWindow(wndHandle);
@@ -324,12 +319,12 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 	return (int)msg.wParam;
 }
 
-HWND InitWindow(HINSTANCE hInstance)
+HWND Main::InitWindow(HINSTANCE hInstance)
 {
 	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = WndProc;
+	wcex.lpfnWndProc = CallWndProc;
 	wcex.hInstance = hInstance;
 	wcex.lpszClassName = L"DirectX 3D Projekt";
 	if (!RegisterClassEx(&wcex))
@@ -355,7 +350,7 @@ HWND InitWindow(HINSTANCE hInstance)
 	return handle;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -381,7 +376,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-HRESULT CreateDirect3DContext(HWND wndHandle)
+HRESULT Main::CreateDirect3DContext(HWND wndHandle)
 {
 	//create a struct to hold inforamtion about the swap chain
 	DXGI_SWAP_CHAIN_DESC scd;
@@ -449,3 +444,20 @@ HRESULT CreateDirect3DContext(HWND wndHandle)
 
 }
 
+Main::~Main()
+{
+	gVertexBuffer->Release();
+	//gConstantBuffer->Release();
+	gVertexLayout->Release();
+	gVertexShader->Release();
+	gPixelShader->Release();
+
+	gBackbufferRTV->Release();
+	gSwapChain->Release();
+	gDevice->Release();
+	gDeviceContext->Release();
+
+	//gTextureView->Release();
+	gDepthStencilBuffer->Release();
+	gDepthStencilView->Release();
+}

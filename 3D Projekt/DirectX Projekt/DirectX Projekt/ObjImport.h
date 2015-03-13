@@ -22,6 +22,20 @@ struct Vertex
 };
 
 
+XMFLOAT3 x_cross(const XMFLOAT3 &a, const XMFLOAT3 &b) {
+	return XMFLOAT3(
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+		);
+}
+
+XMFLOAT3 x_sum(const XMFLOAT3 &a, const XMFLOAT3 &b)
+{
+	return XMFLOAT3(a.x + b.x,
+		a.y + b.y, a.z + b.z);
+
+}
 
 struct o_SurfaceMaterial
 {
@@ -35,20 +49,7 @@ struct o_SurfaceMaterial
 	bool								oM_isTransparent;
 };
 
-XMFLOAT3 cross(const XMFLOAT3 &a, const XMFLOAT3 &b) {
-	return XMFLOAT3(
-		a.y * b.z - a.z * b.y,
-		a.z * b.x - a.x * b.z,
-		a.x * b.y - a.y * b.x
-		);
-}
 
-XMFLOAT3 xsum(const XMFLOAT3 &a, const XMFLOAT3 &b)
-{
-	return XMFLOAT3(a.x + b.x,
-		a.y + b.y, a.z + b.z);
-
-}
 
 class ObjImport{
 private:

@@ -1,161 +1,24 @@
-﻿Build started 2015-03-10 17:53:58.
+﻿Build started 2015-03-13 19:25:39.
      1>Project "D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\DirectX Projekt\DirectX Projekt.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp ObjImport.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ObjImport.cpp
          ObjImport.cpp
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(159): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(437): error C2065: 'o_textureNameArray' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(437): error C2228: left of '.size' must have class/struct/union
-                 type is 'unknown-type'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(439): error C2065: 'o_textureNameArray' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(474): error C2065: 'o_meshGroups' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2065: 'uint' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2146: syntax error : missing ';' before identifier 'j'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2065: 'j' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2143: syntax error : missing ')' before '++'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2059: syntax error : ';'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(477): error C2059: syntax error : ')'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(479): error C2143: syntax error : missing '}' before 'if'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(479): error C2143: syntax error : missing ';' before 'if'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(479): error C2065: 'j' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(479): error C2228: left of '.oM_materialName' must have class/struct/union
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(481): error C2065: 'j' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(485): error C2065: 'matAssigned' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C2059: syntax error : 'for'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C2143: syntax error : missing ')' before ';'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C2143: syntax error : missing ';' before '<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C2059: syntax error : '++'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(494): error C2059: syntax error : ')'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(495): error C2143: syntax error : missing ';' before '{'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(495): error C2447: '{' : missing function header (old-style formal list?)
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(502): error C2143: syntax error : missing ';' before '<<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(502): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(506): error C2059: syntax error : 'if'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(507): error C2143: syntax error : missing ';' before '{'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(507): error C2447: '{' : missing function header (old-style formal list?)
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(562): error C2143: syntax error : missing ';' before '<<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(562): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(562): error C2086: 'int cout' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(502) : see declaration of 'cout'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(563): error C2143: syntax error : missing ';' before '<<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(563): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(563): error C2086: 'int cout' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(502) : see declaration of 'cout'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(564): error C2143: syntax error : missing ';' before '<<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(564): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(565): error C2143: syntax error : missing ';' before '<<'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(565): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(565): error C2086: 'int wcout' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(564) : see declaration of 'wcout'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(569): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(569): error C2365: 'memset' : redefinition; previous definition was 'function'
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(94) : see declaration of 'memset'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(569): error C2078: too many initializers
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(570): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(570): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(570): error C2371: 'iBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(568) : see declaration of 'iBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(571): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(571): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(571): error C2371: 'iBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(568) : see declaration of 'iBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(572): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(572): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(572): error C2371: 'iBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(568) : see declaration of 'iBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(573): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(573): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(573): error C2371: 'iBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(568) : see declaration of 'iBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(574): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(574): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(574): error C2371: 'iBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(568) : see declaration of 'iBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(577): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(577): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(577): error C2371: 'i_initData' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(576) : see declaration of 'i_initData'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(578): error C2143: syntax error : missing ';' before '->'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(578): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(582): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(582): error C2365: 'memset' : redefinition; previous definition was 'function'
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(94) : see declaration of 'memset'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(582): error C2078: too many initializers
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(584): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(584): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(584): error C2371: 'vBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(581) : see declaration of 'vBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(585): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(585): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(585): error C2371: 'vBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(581) : see declaration of 'vBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(586): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(586): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(586): error C2371: 'vBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(581) : see declaration of 'vBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(587): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(587): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(587): error C2371: 'vBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(581) : see declaration of 'vBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(588): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(588): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(588): error C2371: 'vBuffDesc' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(581) : see declaration of 'vBuffDesc'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(592): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(592): error C2365: 'memset' : redefinition; previous definition was 'function'
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(94) : see declaration of 'memset'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(592): error C2078: too many initializers
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(593): error C2143: syntax error : missing ';' before '.'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(593): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(593): error C2371: 'vBuffData' : redefinition; different basic types
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(590) : see declaration of 'vBuffData'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(594): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(594): error C2227: left of '->CreateBuffer' must point to class/struct/union/generic type
-                 type is 'int'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(594): error C2065: 'o_meshVertBuff' : undeclared identifier
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(596): error C2059: syntax error : 'return'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(597): error C2059: syntax error : '}'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(597): error C2143: syntax error : missing ';' before '}'
-         Main.cpp
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(232): error C2086: 'ID3D11BlendState *o_Transparency' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(221) : see declaration of 'o_Transparency'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(233): error C2086: 'ID3D11Buffer *o_meshVertBuff' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(222) : see declaration of 'o_meshVertBuff'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(234): error C2086: 'ID3D11Buffer *o_meshIndexBuff' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(223) : see declaration of 'o_meshIndexBuff'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(236): error C2086: 'DirectX::XMMATRIX o_meshWorldMTX' : redefinition
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(225) : see declaration of 'o_meshWorldMTX'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(237): error C2374: 'o_meshGroups' : redefinition; multiple initialization
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(226) : see declaration of 'o_meshGroups'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(238): error C2086: 'std::vector<int,std::allocator<_Ty>> o_meshGroupIndexStart' : redefinition
-                 with
-                 [
-                     _Ty=int
-                 ]
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(227) : see declaration of 'o_meshGroupIndexStart'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(239): error C2086: 'std::vector<int,std::allocator<_Ty>> o_meshGroupTexture' : redefinition
-                 with
-                 [
-                     _Ty=int
-                 ]
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(228) : see declaration of 'o_meshGroupTexture'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(240): error C2086: 'std::vector<ID3D11ShaderResourceView *,std::allocator<_Ty>> o_meshSRV' : redefinition
-                 with
-                 [
-                     _Ty=ID3D11ShaderResourceView *
-                 ]
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(229) : see declaration of 'o_meshSRV'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(241): error C2086: 'std::vector<std::wstring,std::allocator<_Ty>> o_textureNameArray' : redefinition
-                 with
-                 [
-                     _Ty=std::wstring
-                 ]
-                 d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(230) : see declaration of 'o_textureNameArray'
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(298): warning C4007: 'wWinMain' : must be '__stdcall'
-         Generating Code...
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(453): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(493): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(90): warning C4101: 'oTemp_texCoordIndex' : unreferenced local variable
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(89): warning C4101: 'oTemp_vertNormIndex' : unreferenced local variable
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\objimport.cpp(88): warning C4101: 'oTemp_vertPosIndex' : unreferenced local variable
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.lib" /MACHINE:X86 Debug\Main.obj
+         Debug\GameTime.obj
+         Debug\ObjImport.obj
+     1>ObjImport.obj : error LNK2005: "struct DirectX::XMFLOAT3 __cdecl x_cross(struct DirectX::XMFLOAT3 const &,struct DirectX::XMFLOAT3 const &)" (?x_cross@@YA?AUXMFLOAT3@DirectX@@ABU12@0@Z) already defined in Main.obj
+     1>ObjImport.obj : error LNK2005: "struct DirectX::XMFLOAT3 __cdecl x_sum(struct DirectX::XMFLOAT3 const &,struct DirectX::XMFLOAT3 const &)" (?x_sum@@YA?AUXMFLOAT3@DirectX@@ABU12@0@Z) already defined in Main.obj
+     1>Main.obj : error LNK2019: unresolved external symbol "public: __thiscall Main::Main(void)" (??0Main@@QAE@XZ) referenced in function _wWinMain@16
+     1>D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.exe : fatal error LNK1120: 1 unresolved externals
      1>Done Building Project "D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\DirectX Projekt\DirectX Projekt.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:02.11
+Time Elapsed 00:00:01.75
