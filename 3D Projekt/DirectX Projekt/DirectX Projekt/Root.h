@@ -15,4 +15,29 @@
 #include <vector>
 
 
+using namespace std;
+using namespace DirectX;
+
+
+struct Vertex
+{
+	Vertex(){}
+	Vertex(float x, float y, float z,
+		float u, float v,
+		float nx, float ny, float nz)
+		: pos(x, y, z),
+		UV(u, v),
+		normal(nx, ny, nz){}
+
+	XMFLOAT3 pos;
+	XMFLOAT2 UV;
+	XMFLOAT3 normal;
+};
+
+
+
+
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+
 #endif

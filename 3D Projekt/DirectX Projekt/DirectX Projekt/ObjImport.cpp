@@ -1,9 +1,6 @@
 
-//#include <vector>
-
 #include "ObjImport.h"
-using namespace DirectX;
-using namespace std;
+
 
 // --- Initialization of variables for 1 object. EACH .OBJ IMPORT NEEDS A SET OF THESE.
 // !!!!*****!!!! Will ideally be placed in a class later.									!!!!*****!!!!
@@ -41,16 +38,24 @@ using namespace std;
 
 ObjImport::ObjImport()
 {
-	o_Transparency;					// mesh transparency Blend State
-	o_meshVertBuff;					// mesh vertex buffer
-	o_meshIndexBuff;				// mesh index buffer
+	o_Transparency =	nullptr;					// mesh transparency Blend State
+	o_meshVertBuff =	nullptr;					// mesh vertex buffer
+	o_meshIndexBuff =	nullptr;				// mesh index buffer
 
 	o_meshWorldMTX;					// mesh world orientation matrix
-	o_meshGroups = 0;					// mesh groups or subsets
+	o_meshGroups = 0;				// mesh groups or subsets
 	o_meshGroupIndexStart;			// mesh group Index start vector. Will contain the indices for when a group begins and ends.
 	o_meshGroupTexture;				// mesh group texture index.
 	o_meshSRV;						// mesh Shader Resource View POINTER
 	o_textureNameArray;				// mesh Texture Name Array to prevent the loading of a material more than once.
+	o_materials;
+}
+
+ObjImport::ObjImport()
+{
+	o_Transparency->Release();
+	o_meshVertBuff->Release();
+	o_meshIndexBuff->Release();
 }
 
 
@@ -548,7 +553,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 
 			edge2 = XMFLOAT3(edge_x, edge_y, edge_z);
 
-			temp_unnormalized_FN = XMFLOAT3(x_cross(edge1, edge2));
+			temp_unnormalized_FN = XMFLOAT3(oMath::x_cross(edge1, edge2));
 			normal_temp.push_back(temp_unnormalized_FN);
 
 		}
@@ -559,7 +564,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 			{
 				if (o_indices[f * 3] == v || o_indices[(f * 3) + 1] == v || o_indices[(f * 3) + 2] == v)
 				{
-					tempSum = x_sum(sumNormal, normal_temp[f]);
+					tempSum = oMath::x_sum(sumNormal, normal_temp[f]);
 					count_face_w_vert++;
 				}
 			}

@@ -12,9 +12,7 @@
 ////#include "ObjImport.cpp"
 #include "main.h"
  
-#include <vector>
-using namespace DirectX;
-using namespace std;
+//#include <vector>
 
 //
 //#pragma comment(lib,"d3d11.lib")
@@ -219,7 +217,9 @@ void Main::CreateBuffers()
 	data.pSysMem = triangleVertices;
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
 
-
+	// Import Obj Data
+	ObjImport sphrThingy;
+	if (sphrThingy.o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &sphrThingy.o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true))
 
 	//o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true);
 	
@@ -267,10 +267,6 @@ void Main::Render()
 
 
 }
-
-
-
-
 
 
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
@@ -443,6 +439,28 @@ HRESULT Main::CreateDirect3DContext(HWND wndHandle)
 	return hr;
 
 }
+
+Main::Main()
+{
+	gSwapChain =		nullptr;
+	gDevice =			nullptr;
+	gDeviceContext =	nullptr;
+	gBackbufferRTV =	nullptr;
+	gTextureView = nullptr;
+	gVertexLayout = nullptr;
+	gDepthStencilView = nullptr;
+	gDepthStencilBuffer = nullptr;
+	gVertexBuffer = nullptr;
+	gIndexBuffer = nullptr;
+	gVertexBuffer = nullptr;
+	gPixelShader = nullptr;
+	gGeometryShader = nullptr;
+	
+	mainName = this;
+}
+
+
+
 
 Main::~Main()
 {

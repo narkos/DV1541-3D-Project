@@ -3,40 +3,23 @@
 
 #include "Root.h"
 
-using namespace DirectX;
-using namespace std;
 
-struct Vertex
-{
-	Vertex(){}
-	Vertex(float x, float y, float z,
-		float u, float v,
-		float nx, float ny, float nz)
-		: pos(x, y, z),
-		UV(u, v),
-		normal(nx, ny, nz){}
+namespace  oMath {
+	static XMFLOAT3 x_cross(const XMFLOAT3 &a, const XMFLOAT3 &b) {
+		return XMFLOAT3(
+			a.y * b.z - a.z * b.y,
+			a.z * b.x - a.x * b.z,
+			a.x * b.y - a.y * b.x
+			);
+	}
 
-	XMFLOAT3 pos;
-	XMFLOAT2 UV;
-	XMFLOAT3 normal;
+	static XMFLOAT3 x_sum(const XMFLOAT3 &a, const XMFLOAT3 &b)
+	{
+		return XMFLOAT3(a.x + b.x,
+			a.y + b.y, a.z + b.z);
+
+	}
 };
-
-
-XMFLOAT3 x_cross(const XMFLOAT3 &a, const XMFLOAT3 &b) {
-	return XMFLOAT3(
-		a.y * b.z - a.z * b.y,
-		a.z * b.x - a.x * b.z,
-		a.x * b.y - a.y * b.x
-		);
-}
-
-XMFLOAT3 x_sum(const XMFLOAT3 &a, const XMFLOAT3 &b)
-{
-	return XMFLOAT3(a.x + b.x,
-		a.y + b.y, a.z + b.z);
-
-}
-
 struct o_SurfaceMaterial
 {
 	wstring								oM_materialName;
@@ -64,6 +47,7 @@ private:
 	vector<ID3D11ShaderResourceView*>		o_meshSRV;						// mesh Shader Resource View POINTER
 	vector<wstring>							o_textureNameArray;				// mesh Texture Name Array to prevent the loading of a material more than once.
 	
+	vector<o_SurfaceMaterial>				o_materials;					//MaterialVector
 	
 public:
 
