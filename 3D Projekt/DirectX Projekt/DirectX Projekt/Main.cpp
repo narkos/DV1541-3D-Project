@@ -1,48 +1,6 @@
-//#include <windows.h>
-//#include <Windows.h>
-//#include <d3d11.h>
-//#include <d3dcompiler.h>
-//#include <DirectXMath.h>
-//#include <DirectXMathMatrix.inl>
-//#include <string.h>
-//#include "GameTime.h"
-//#include <iostream>
-//#include <fstream>
-//#include <sstream>
-////#include "ObjImport.cpp"
+
 #include "main.h"
  
-//#include <vector>
-
-//
-//#pragma comment(lib,"d3d11.lib")
-//#pragma comment(lib,"d3dcompiler.lib")
-
-//HRESULT CreateDirect3DContext(HWND wndHandle);
-//HWND InitWindow(HINSTANCE hInstance);
-//LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-//
-//
-//IDXGISwapChain* gSwapChain = nullptr;
-//ID3D11Device* gDevice = nullptr;
-//ID3D11DeviceContext* gDeviceContext = nullptr;
-//ID3D11RenderTargetView* gBackbufferRTV = nullptr;
-//ID3D11ShaderResourceView* gTextureView = nullptr;
-//
-//ID3D11InputLayout* gVertexLayout = nullptr;
-//ID3D11DepthStencilView* gDepthStencilView = nullptr;
-//ID3D11Texture2D* gDepthStencilBuffer = nullptr;
-//
-//ID3D11Buffer* gVertexBuffer = nullptr;
-//ID3D11Buffer* gIndexBuffer = nullptr;
-//ID3D11VertexShader* gVertexShader = nullptr;
-//ID3D11PixelShader* gPixelShader = nullptr;
-//ID3D11GeometryShader* gGeometryShader = nullptr;
-//
-//GameTimer mTimer;
-//std::wstring mMainWndCaption;
-//HWND handle;
-
 namespace { Main* mainName = 0; }
 
 LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -106,8 +64,8 @@ void Main::CreateShaders()
 	//------------Create input layout-----------------------------------------------------------------------------------------------
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 
 	};
 	
@@ -128,14 +86,116 @@ void Main::CreateShaders()
 	pGS->Release();
 	
 }
-//
-//struct MatrixBuffer
-//{
-//	XMMATRIX worldMatrix;
-//	XMMATRIX viewMatrix;
-//	XMMATRIX projectionMatrix;
-//};
-//
+
+bool Main::InitDirectInput(HINSTANCE hInstance)
+{
+	HRESULT hr;
+	hr = DirectInput8Create(hInstance,
+		DIRECTINPUT_VERSION,
+		IID_IDirectInput8,
+		(void**)&DirectInput,
+		NULL);
+
+	hr = DirectInput->CreateDevice(GUID_SysKeyboard,
+		&DIKeyboard,
+		NULL);
+
+	hr = DirectInput->CreateDevice(GUID_SysMouse,
+		&DIMouse,
+		NULL);
+
+	hr = DIKeyboard->SetDataFormat(&c_dfDIKeyboard);
+	hr = DIKeyboard->SetCooperativeLevel(handle, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+
+	hr = DIMouse->SetDataFormat(&c_dfDIMouse);
+	hr = DIMouse->SetCooperativeLevel(handle, DISCL_EXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
+
+	return true;
+}
+ 
+ 
+void Main::UpdateCamera()
+{
+	camRotationMatrix = XMMatrixRotationRollPitchYaw(camPitch, camYaw, 0);
+	camTarget = XMVector3TransformCoord(DefaultForward, camRotationMatrix);
+	camTarget = XMVector3Normalize(camTarget);
+
+	//First-Person Camera
+	/* XMMATRIX RotateYTempMatrix;
+	RotateYTempMatrix = XMMatrixRotationY(camPitch);
+
+	camRight = XMVector3TransformCoord(DefaultRight, RotateYTempMatrix);
+	camUp = XMVector3TransformCoord(camUp, RotateYTempMatrix);
+	camForward = XMVector3TransformCoord(DefaultForward, RotateYTempMatrix);
+	*/
+
+	//Free-Look Camera
+	camRight = XMVector3TransformCoord(DefaultRight, camRotationMatrix);
+	camForward = XMVector3TransformCoord(DefaultForward, camRotationMatrix);
+	camUp = XMVector3Cross(camForward, camRight);
+
+	camPosition += moveLeftRight*camRight;
+	camPosition += moveBackForward*camForward;
+
+	moveLeftRight = 0.0f;
+	moveBackForward = 0.0f;
+
+
+	camTarget = camPosition + camTarget;
+
+	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
+ 
+ 
+}
+
+void Main::DetectInput()
+{
+	DIMOUSESTATE mouseCurrState;
+
+	BYTE keyboardState[256];
+
+	DIKeyboard->Acquire();
+	DIMouse->Acquire();
+
+	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
+
+	DIKeyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
+
+	//Exit program when escape is pushed down
+	if (keyboardState[DIK_ESCAPE] & 0x80)
+		PostMessage(handle, WM_DESTROY, 0, 0);
+
+	float speed = 0.001f;
+
+	if (keyboardState[DIK_A] & 0x80 || keyboardState[DIK_LEFT] & 0x80)
+	{
+		moveLeftRight -= speed;
+	}
+	if (keyboardState[DIK_D] & 0x80 || keyboardState[DIK_RIGHT] & 0x80)
+	{
+		moveLeftRight += speed;
+	}
+	if (keyboardState[DIK_W] & 0x80 || keyboardState[DIK_UP] & 0x80)
+	{
+		moveBackForward += speed;
+	}
+	if (keyboardState[DIK_S] & 0x80 || keyboardState[DIK_DOWN] & 0x80)
+	{
+		moveBackForward -= speed;
+	}
+	if ((mouseCurrState.lX != mouseLastState.lX) || (mouseCurrState.lY != mouseLastState.lY))
+	{
+		camYaw += mouseLastState.lX * 0.001f;
+
+		camPitch += mouseCurrState.lY * 0.001f;
+
+		mouseLastState = mouseCurrState;
+	}
+
+
+	return;
+}
+
 
 
 void Main::FpsCounter()
@@ -186,23 +246,23 @@ void Main::CreateBuffers()
 	}
 	triangleVertices[4] =
 	{
-		-0.5f, -0.5f, 0.0f,	//v0 pos
-		0.0f, 1.0f, 0.0f, 	//v0 Color
+		-0.5f, -0.5f, 5.0f,	//v0 pos
+		0.0f, 1.0f, 	//v0 Color
 		0.0f, 0.0f, -1.0f,
 
 
-		-0.5f, 0.5f, 0.0f,	//v1
-		0.0f, 0.0f, 1.0f, 	//v1 
+		-0.5f, 0.5f, 5.0f,	//v1
+		0.0f, 0.0f, 	//v1 
 		0.0f, 0.0f, -1.0f,
 
 
-		0.5f, -0.5f, 0.0f, //v2
-		1.0f, 1.0f, 0.0f,	//
+		0.5f, -0.5f, 5.0f, //v2
+		1.0f, 1.0f,	//
 		0.0f, 0.0f, -1.0f,
 
 
-		0.5f, 0.5f, 0.0f, //v3
-		1.0f, 0.0f, 0.0f,	
+		0.5f, 0.5f, 5.0f, //v3
+		1.0f, 0.0f,	
 		0.0f, 0.0f, -1.0f
 
 	};
@@ -219,12 +279,18 @@ void Main::CreateBuffers()
 
 	// Import Obj Data
 	sphrThingy = new ObjImport(L"Assets\\shprThingy_01.obj", gDevice, true, true);
-	int asdf = 0;
-	//if (sphrThingy.o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &sphrThingy.o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true))
 
-	//o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true);
-	
-	
+
+
+	// Create Constant Buffer(s)
+	D3D11_BUFFER_DESC cBufferDesc;
+	memset(&cBufferDesc, 0, sizeof(cBufferDesc));
+
+	cBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	cBufferDesc.ByteWidth = sizeof(MatrixBuffer);
+
+	gDevice->CreateBuffer(&cBufferDesc, NULL, &gConstantBufferCamera);
 
 }
 
@@ -247,7 +313,7 @@ void Main::Update()
 	sphrThingy->o_meshWorldMTX = XMMatrixIdentity();
 	Rotation = XMMatrixRotationY(3.14f);
 	Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-	Translation = XMMatrixTranslation(0.0f, 0.0f, 5.0f);
+	Translation = XMMatrixTranslation(-1.0f, 0.0f, 3.0f);
 	sphrThingy->o_meshWorldMTX = Rotation *  Scale * Translation;
 
 
@@ -258,39 +324,33 @@ void Main::Update()
 void Main::Render()
 {
 	float clearColor[] = { 0, 0, 0, 1 };
+	UINT32 vertexSize = sizeof(float) * 8;
+	UINT32 offset = 0;
+
+	World = XMMatrixIdentity();
+
+
+	gDeviceContext->IASetInputLayout(gVertexLayout);
+	/*World = XMMatrixTranslation(0.0f, 0.0f, 0.0f);*/
+
+	DetectInput();
+	UpdateCamera();
+
+	camProjection = XMMatrixPerspectiveFovLH((3.14f*(0.4f)), (640.0f / 480.0f), 0.5f, 1000.0f);
+	WVP = XMMatrixMultiply(World, XMMatrixMultiply(camView, camProjection));
+	cbPerObj.WVP = XMMatrixTranspose(WVP);
+
+	gDeviceContext->UpdateSubresource(gConstantBufferCamera, 0, NULL, &cbPerObj, 0, 0);
+	gDeviceContext->VSSetConstantBuffers(0, 1, &gConstantBufferCamera);
+
 	gDeviceContext->ClearRenderTargetView(gBackbufferRTV, clearColor);
 	gDeviceContext->ClearDepthStencilView(gDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	
-	Update();
-	//Render Quad
-	/*UINT32 vertexSize = sizeof(float) * 9;
-	UINT32 offset = 0;
-	gDeviceContext->IASetInputLayout(gVertexLayout);
-	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
-	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
-
-	UINT32 vertexSize = sizeof(float) * 8;
-	UINT32 offset = 0;
-	gDeviceContext->IASetInputLayout(gVertexLayout);
-	for (int i = 0; i < sphrThingy->o_meshGroups; ++i)
-	{
-		gDeviceContext->IASetIndexBuffer(sphrThingy->o_meshIndexBuff, DXGI_FORMAT_R32_UINT, 0);
-		gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy->o_meshVertBuff, &vertexSize, &offset);
-
-		WVPMatrix = sphrThingy->o_meshWorldMTX;
-
-		int indexStart = sphrThingy->o_meshGroupIndexStart[i];
-		int indexDrawAmount = sphrThingy->o_meshGroupIndexStart[i + 1] - sphrThingy->o_meshGroupIndexStart[i];
-		gDeviceContext->DrawIndexed(indexDrawAmount, indexStart, 0);
-			
-
-
-	}
 
 	gDeviceContext->IASetInputLayout(gVertexLayout);
 	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
-	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); 
-	
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
 	/*gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy.o_meshVertBuff, &vertexSize, &offset);
 	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
 
@@ -305,6 +365,37 @@ void Main::Render()
 
 	//Draw Object with 4 vertices
 	gDeviceContext->Draw(4, 0);
+
+
+	Update();
+	//Render Quad
+	/*UINT32 vertexSize = sizeof(float) * 9;
+	UINT32 offset = 0;
+	gDeviceContext->IASetInputLayout(gVertexLayout);
+	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
+
+	
+	for (int i = 0; i < sphrThingy->o_meshGroups; ++i)
+	{
+		gDeviceContext->IASetIndexBuffer(sphrThingy->o_meshIndexBuff, DXGI_FORMAT_R32_UINT, 0);
+		gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy->o_meshVertBuff, &vertexSize, &offset);
+
+		/*WVP = sphrThingy->o_meshWorldMTX * camView * camProjection;
+		cbPerObj.WVP = XMMatrixTranspose(WVP);*/
+		gDeviceContext->UpdateSubresource(gConstantBufferCamera, 0, NULL, &cbPerObj, 0, 0); 
+		gDeviceContext->VSSetConstantBuffers(0, 1, &gConstantBufferCamera);
+		
+		int indexStart = sphrThingy->o_meshGroupIndexStart[i];
+
+		int indexDrawAmount = sphrThingy->o_meshGroupIndexStart[i + 1] - sphrThingy->o_meshGroupIndexStart[i];
+		gDeviceContext->DrawIndexed(indexDrawAmount, indexStart, 0);
+			
+
+
+	}
+
+	
 
 
 
@@ -328,6 +419,10 @@ int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int
 		mainObject.CreateShaders();
 
 		mainObject.CreateBuffers();
+
+		mainObject.InitDirectInput(hInstance);
+
+
 
 
 		ShowWindow(wndHandle, nCmdShow);
@@ -498,6 +593,18 @@ Main::Main()
 	gPixelShader = nullptr;
 	gGeometryShader = nullptr;
 	
+	gConstantBufferCamera = nullptr;
+	
+	DefaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	DefaultRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	camForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	camRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+
+	moveLeftRight = 0.0f;
+	moveBackForward = 0.0f;
+	camYaw = 0.0f;
+	camPitch = 0.0f;
+
 	mainName = this;
 }
 
@@ -520,4 +627,11 @@ Main::~Main()
 	//gTextureView->Release();
 	gDepthStencilBuffer->Release();
 	gDepthStencilView->Release();
+
+	gConstantBufferCamera->Release();
+	DIKeyboard->Release();
+	DIMouse->Release();
+	delete sphrThingy;
+
+
 }

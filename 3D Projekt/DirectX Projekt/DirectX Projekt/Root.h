@@ -14,10 +14,17 @@
 #include <sstream>
 #include <vector>
 #include "DirectXTK\Inc\WICTextureLoader.h"
+#include <dwrite.h>
+#include <dinput.h>
+
 
 using namespace std;
 using namespace DirectX;
 
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 
 struct Vertex
 {

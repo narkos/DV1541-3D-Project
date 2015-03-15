@@ -22,6 +22,15 @@
 //#pragma comment(lib,"d3dcompiler.lib")
 //
 
+struct MatrixBuffer
+{
+	XMMATRIX WVP;
+	/*XMMATRIX worldMatrix;
+	XMMATRIX viewMatrix;
+	XMMATRIX projectionMatrix;*/
+};
+
+
 class Main
 {
 
@@ -39,22 +48,31 @@ public:
 	LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	//LRESULT CALLBACK CallWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HRESULT CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ LPCSTR profile, _Outptr_ ID3DBlob** blob);
-	struct MatrixBuffer;
+	/*struct MatrixBuffer;*/
 	
+
+	//Controller Functions
+	bool InitDirectInput(HINSTANCE hInstance);
+	void UpdateCamera(void);
+	void DetectInput();
+
+
 	GameTimer mTimer;
 	std::wstring mMainWndCaption;
 	HWND handle;
 
-	XMMATRIX WVPMatrix;
+	/*XMMATRIX WVPMatrix;
 	XMMATRIX worldMatrix;
 	XMMATRIX viewMatrix;
 	XMMATRIX worldView;
 	XMMATRIX projMatrix;
-
+	*/
 	XMMATRIX Rotation;
 	XMMATRIX Scale;
 	XMMATRIX Translation;
 
+
+	MatrixBuffer cbPerObj;
 
 	ObjImport* o_import = nullptr;
 
@@ -77,8 +95,43 @@ public:
 	ID3D11PixelShader* gPixelShader = nullptr;
 	ID3D11GeometryShader* gGeometryShader = nullptr;
 
+	//New from Attila
+	ID3D11Buffer* gConstantBufferCamera;
+
+	IDirectInputDevice8* DIKeyboard;
+	IDirectInputDevice8* DIMouse;
+
+	DIMOUSESTATE mouseLastState;
+	LPDIRECTINPUT8 DirectInput;
+
 	//Objects
 	ObjImport* sphrThingy;
+
+
+	//Camera Objects
+	XMMATRIX WVP;
+	XMMATRIX World;
+	XMMATRIX camView;
+	XMMATRIX camProjection;
+
+	XMVECTOR camPosition;
+	XMVECTOR camTarget;
+	XMVECTOR camUp;
+
+
+	XMVECTOR DefaultForward ;
+	XMVECTOR DefaultRight ;
+	XMVECTOR camForward ;
+	XMVECTOR camRight ;
+
+	XMMATRIX camRotationMatrix;
+	XMMATRIX groundWorld;
+
+	float moveLeftRight /*= 0.0f*/;
+	float moveBackForward /*= 0.0f*/;
+
+	float camYaw /*= 0.0f*/;
+	float camPitch /*= 0.0f*/;
 
 
 protected:

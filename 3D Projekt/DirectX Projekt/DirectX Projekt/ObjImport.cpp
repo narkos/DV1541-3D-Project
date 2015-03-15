@@ -230,21 +230,21 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 					if (!o_hasTexCoord && !o_hasNormals)		//Interprets face data if obj does NOT have defined normals or texcoords defined.
 					{
 						swscanf_s(lineData.c_str(), L"f %d %d %d",
-							&t_vp_f[0], &t_vp_f[1], &t_vp_f[2]);
+							&t_vp_f[2], &t_vp_f[1], &t_vp_f[0]);
 
-						t_vt_f[0], t_vt_f[1], t_vt_f[2], t_vn_f[0], t_vn_f[1], t_vn_f[2] = 0; // Default Texcoords and Normals to 0
+						t_vt_f[2], t_vt_f[1], t_vt_f[0], t_vn_f[2], t_vn_f[1], t_vn_f[0] = 0; // Default Texcoords and Normals to 0
 					}
 					else if (o_hasTexCoord && !o_hasNormals)	//Face data has texcoords but NOT normals
 					{
 						swscanf_s(lineData.c_str(), L"f %d/%d %d/%d %d/%d",
-							&t_vp_f[0], &t_vt_f[0], &t_vp_f[0], &t_vt_f[1], &t_vp_f[2], &t_vt_f[2]);
+							&t_vp_f[2], &t_vt_f[2], &t_vp_f[1], &t_vt_f[1], &t_vp_f[0], &t_vt_f[0]);
 
 						t_vn_f[0], t_vn_f[1], t_vn_f[2] = 0;		// Default Normals to 0
 					}
 					else if (!o_hasTexCoord && o_hasNormals)	//Face data has normals but NOT 
 					{
 						swscanf_s(lineData.c_str(), L"f %d//%d %d//%d %d//%d",
-							&t_vp_f[0], &t_vn_f[0], &t_vp_f[0], &t_vn_f[1], &t_vn_f[2], &t_vn_f[2]);
+							&t_vp_f[2], &t_vn_f[2], &t_vp_f[1], &t_vn_f[1], &t_vn_f[0], &t_vn_f[0]);
 
 						t_vt_f[0], t_vt_f[1], t_vt_f[2] = 0;	// Default Texcoords to 0
 
@@ -252,7 +252,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 					else
 					{											//Face data has BOTH normals and texcoords.
 						swscanf_s(lineData.c_str(), L"f %d/%d/%d %d/%d/%d %d/%d/%d",
-							&t_vp_f[0], &t_vt_f[0], &t_vn_f[0], &t_vp_f[1], &t_vt_f[1], &t_vn_f[1], &t_vp_f[2], &t_vt_f[2], &t_vn_f[2]);
+							&t_vp_f[2], &t_vt_f[2], &t_vn_f[2], &t_vp_f[1], &t_vt_f[1], &t_vn_f[1], &t_vp_f[0], &t_vt_f[0], &t_vn_f[0]);
 
 						for (int i = 0; i < 3; i++)
 						{
@@ -276,8 +276,8 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 							bool vertExists = false;
 							for (int indexCheck = 0; indexCheck < o_totalVertices; ++indexCheck)
 							{
-								if (t_vp_f[vertCheck] == o_vertPosIndex[indexCheck] /*&& t_vt_f[vertCheck] == o_texCoordIndex[indexCheck]*/
-									/*&& t_vn_f[vertCheck] == o_vertNormIndex[indexCheck]*/ && !vertExists)
+								if (t_vp_f[vertCheck] == o_vertPosIndex[indexCheck] && t_vt_f[vertCheck] == o_texCoordIndex[indexCheck]
+									 && t_vn_f[vertCheck] == o_vertNormIndex[indexCheck] && !vertExists)
 								{
 									o_indices.push_back(vertCheck);
 									vertExists = true;
@@ -342,7 +342,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	else
 	{
 		//Error message
-		wstring o_eMessage = L"Could not the file: ";
+		wstring o_eMessage = L"Could not open the file: ";
 		o_eMessage += o_fileName;
 
 		MessageBox(0, o_eMessage.c_str(), L"Error", MB_OK);
@@ -553,7 +553,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 
 	// If the normals have not been given, or we wish to recreate/average them, this function will create them for us
 	// by first calculating the face normals and then the vertex normals. Requiers 'createNormals' to be true.
-	if (createNormals = true)
+	if (createNormals == true)
 	{
 		vector<XMFLOAT3>normal_temp;			//Temporary vector for our computed face normals.
 		XMFLOAT3 edge1, edge2;					//Holds edge vector data.
@@ -618,7 +618,8 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	D3D11_BUFFER_DESC iBuffDesc;
 	memset(&iBuffDesc, 0, sizeof(iBuffDesc));
 	iBuffDesc.Usage = D3D11_USAGE_DEFAULT;
-	iBuffDesc.ByteWidth = sizeof(DWORD) * o_totalTriangles * 3;
+	//iBuffDesc.ByteWidth = sizeof(DWORD) * o_totalTriangles * 3;
+	iBuffDesc.ByteWidth = sizeof(DWORD) * o_totalTriangles *3;
 	iBuffDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	iBuffDesc.CPUAccessFlags = 0;
 	iBuffDesc.MiscFlags = 0;
