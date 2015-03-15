@@ -218,8 +218,9 @@ void Main::CreateBuffers()
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
 
 	// Import Obj Data
-	ObjImport sphrThingy;
-	if (sphrThingy.o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &sphrThingy.o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true))
+	sphrThingy = new ObjImport(L"Assets\\shprThingy_01.obj", gDevice, true, true);
+	int asdf = 0;
+	//if (sphrThingy.o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &sphrThingy.o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true))
 
 	//o_OBJIMPORT(L"Assets\\shprThingy_01.obj", &o_meshVertBuff, &o_meshIndexBuff, o_meshGroupIndexStart, o_meshGroupTexture, o_materials, gDevice, o_meshGroups, true, true);
 	
@@ -240,18 +241,59 @@ void Main::SetViewport()
 	gDeviceContext->RSSetViewports(1, &vp);
 }
 
+void Main::Update()
+{
+	// Hold and update space matricies before rendering.
+	sphrThingy->o_meshWorldMTX = XMMatrixIdentity();
+	Rotation = XMMatrixRotationY(3.14f);
+	Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	Translation = XMMatrixTranslation(0.0f, 0.0f, 5.0f);
+	sphrThingy->o_meshWorldMTX = Rotation *  Scale * Translation;
+
+
+}
+
+
+
 void Main::Render()
 {
 	float clearColor[] = { 0, 0, 0, 1 };
 	gDeviceContext->ClearRenderTargetView(gBackbufferRTV, clearColor);
 	gDeviceContext->ClearDepthStencilView(gDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
+	
+	Update();
 	//Render Quad
-	UINT32 vertexSize = sizeof(float) * 9;
+	/*UINT32 vertexSize = sizeof(float) * 9;
 	UINT32 offset = 0;
 	gDeviceContext->IASetInputLayout(gVertexLayout);
 	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
-	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
+
+	UINT32 vertexSize = sizeof(float) * 8;
+	UINT32 offset = 0;
+	gDeviceContext->IASetInputLayout(gVertexLayout);
+	for (int i = 0; i < sphrThingy->o_meshGroups; ++i)
+	{
+		gDeviceContext->IASetIndexBuffer(sphrThingy->o_meshIndexBuff, DXGI_FORMAT_R32_UINT, 0);
+		gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy->o_meshVertBuff, &vertexSize, &offset);
+
+		WVPMatrix = sphrThingy->o_meshWorldMTX;
+
+		int indexStart = sphrThingy->o_meshGroupIndexStart[i];
+		int indexDrawAmount = sphrThingy->o_meshGroupIndexStart[i + 1] - sphrThingy->o_meshGroupIndexStart[i];
+		gDeviceContext->DrawIndexed(indexDrawAmount, indexStart, 0);
+			
+
+
+	}
+
+	gDeviceContext->IASetInputLayout(gVertexLayout);
+	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); 
+	
+	/*gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy.o_meshVertBuff, &vertexSize, &offset);
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
+
 
 	//Set Shaders and texture
 	gDeviceContext->HSSetShader(nullptr, nullptr, 0);

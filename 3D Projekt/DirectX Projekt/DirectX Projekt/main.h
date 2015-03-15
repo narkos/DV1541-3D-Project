@@ -30,6 +30,7 @@ public:
 	void CreateShaders();
 	void CreateBuffers();
 	void SetViewport();
+	void Update();
 	void Render();
 	void FpsCounter();
 	//int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow);
@@ -43,6 +44,17 @@ public:
 	GameTimer mTimer;
 	std::wstring mMainWndCaption;
 	HWND handle;
+
+	XMMATRIX WVPMatrix;
+	XMMATRIX worldMatrix;
+	XMMATRIX viewMatrix;
+	XMMATRIX worldView;
+	XMMATRIX projMatrix;
+
+	XMMATRIX Rotation;
+	XMMATRIX Scale;
+	XMMATRIX Translation;
+
 
 	ObjImport* o_import = nullptr;
 
@@ -64,6 +76,10 @@ public:
 	ID3D11VertexShader* gVertexShader = nullptr;
 	ID3D11PixelShader* gPixelShader = nullptr;
 	ID3D11GeometryShader* gGeometryShader = nullptr;
+
+	//Objects
+	ObjImport* sphrThingy;
+
 
 protected:
 

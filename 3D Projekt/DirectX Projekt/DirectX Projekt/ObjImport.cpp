@@ -1,7 +1,6 @@
 
 #include "ObjImport.h"
 
-
 // --- Initialization of variables for 1 object. EACH .OBJ IMPORT NEEDS A SET OF THESE.
 // !!!!*****!!!! Will ideally be placed in a class later.									!!!!*****!!!!
 
@@ -51,14 +50,44 @@ ObjImport::ObjImport()
 	o_materials;
 }
 
-ObjImport::ObjImport()
+ObjImport::ObjImport(wstring fileName, ID3D11Device* device, bool rh, bool cnormals)
 {
-	o_Transparency->Release();
-	o_meshVertBuff->Release();
-	o_meshIndexBuff->Release();
+	ObjImport();
+
+	if (!o_OBJIMPORT(
+		fileName,
+		&o_meshVertBuff,
+		&o_meshIndexBuff,
+		o_meshGroupIndexStart,
+		o_meshGroupTexture,
+		o_materials,
+		device,
+		o_meshGroups,
+		rh,
+		cnormals
+		))
+	{
+		//Error message
+		wstring o_eMessage = L"Could not create object from: ";
+		o_eMessage += fileName;
+
+		MessageBox(0, o_eMessage.c_str(), L"Error", MB_OK);
+		
+	}
+
 }
 
+ObjImport::~ObjImport()
+{
+	//delete o_Transparency;
+	//o_meshVertBuff->Release();
+	//o_meshIndexBuff->Release();
+}
 
+ID3D11Buffer* ObjImport::getMeshVB()
+{
+	return o_meshVertBuff;
+}
 
 bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	ID3D11Buffer** vBuff,
@@ -466,15 +495,15 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 					}
 					if (!tex_isLoaded)
 					{
-						//ID3D11ShaderResourceView* temp_SRV;
-						////hr = D3DX11CreateShaderResourceViewFromFile(d3d11Device, tex_fileName.c_str(), NULL, NULL, &temp_SRV, NULL);
-						//if (SUCCEEDED(hr))
-						//{
-						//	o_textureNameArray.push_back(tex_fileName.c_str());
-						//	material[mat_count - 1].oM_texIndex = o_meshSRV.size();
-						//	o_meshSRV.push_back(temp_SRV);
-						//	material[mat_count - 1].oM_hasTexture = true;
-						//}
+						ID3D11ShaderResourceView* temp_SRV;
+						hr = CreateWICTextureFromFile(device, tex_fileName.c_str(), NULL, &temp_SRV);
+						if (SUCCEEDED(hr))
+						{
+							o_textureNameArray.push_back(tex_fileName.c_str());
+							material[mat_count - 1].oM_texIndex = o_meshSRV.size();
+							o_meshSRV.push_back(temp_SRV);
+							material[mat_count - 1].oM_hasTexture = true;
+						}
 					}
 
 				}

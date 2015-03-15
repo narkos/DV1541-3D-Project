@@ -13,7 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include "DirectXTK\Inc\WICTextureLoader.h"
 
 using namespace std;
 using namespace DirectX;
@@ -34,9 +34,10 @@ struct Vertex
 	XMFLOAT3 normal;
 };
 
-
-
-
+//
+//HRESULT CreateWICTextureFromFileEx(
+//	)
+//
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")
 

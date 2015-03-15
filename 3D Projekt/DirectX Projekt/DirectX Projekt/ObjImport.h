@@ -35,7 +35,8 @@ struct o_SurfaceMaterial
 
 
 class ObjImport{
-private:
+//private:
+public:
 	ID3D11BlendState*						o_Transparency;					// mesh transparency Blend State
 	ID3D11Buffer*							o_meshVertBuff;					// mesh vertex buffer
 	ID3D11Buffer*							o_meshIndexBuff;				// mesh index buffer
@@ -52,6 +53,7 @@ private:
 public:
 
 	ObjImport();
+	ObjImport(wstring fileName, ID3D11Device* device, bool rh, bool cnormals);
 	~ObjImport();
 	bool o_OBJIMPORT(wstring fileName,
 					ID3D11Buffer** vBuff,
@@ -64,6 +66,10 @@ public:
 					bool isRHCoordSys,
 					bool createNormals
 	);
+
+	ID3D11Buffer* getMeshVB(void);
+	ID3D11Buffer* getMeshIB(void);
+
 
 };
 
