@@ -278,7 +278,7 @@ void Main::CreateBuffers()
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
 
 	// Import Obj Data
-	sphrThingy = new ObjImport(L"Assets\\shprThingy_01.obj", gDevice, true, true);
+	sphrThingy = new ObjImport(L"Assets\\testCube.obj", gDevice, true, true);
 
 
 
