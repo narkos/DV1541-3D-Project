@@ -1,11 +1,11 @@
-﻿Build started 2015-03-15 18:37:55.
+﻿Build started 2015-03-16 12:30:14.
      1>Project "D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\DirectX Projekt\DirectX Projekt.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\\DirectXTK\Inc" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
          Main.cpp
          c:\program files (x86)\windows kits\8.1\include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
      1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(281): warning C4316: 'ObjImport' : object allocated on the heap may not be aligned 16
-     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(406): warning C4007: 'wWinMain' : must be '__stdcall'
+     1>d:\skapa\programming\dv1541-3d-project\3d projekt\directx projekt\directx projekt\main.cpp(408): warning C4007: 'wWinMain' : must be '__stdcall'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\SKAPA\Programming\DV1541-3D-Project\3D Projekt\DirectX Projekt\Debug\DirectX Projekt.lib" /MACHINE:X86 Debug\Main.obj
          Debug\GameTime.obj
@@ -16,4 +16,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.74
+Time Elapsed 00:00:01.65

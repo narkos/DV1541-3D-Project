@@ -28,6 +28,10 @@ struct MatrixBuffer
 	/*XMMATRIX worldMatrix;
 	XMMATRIX viewMatrix;
 	XMMATRIX projectionMatrix;*/
+	XMFLOAT4 diffuseColor;
+	bool hasTexture;
+
+
 };
 
 

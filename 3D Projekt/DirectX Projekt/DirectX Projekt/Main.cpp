@@ -278,8 +278,7 @@ void Main::CreateBuffers()
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
 
 	// Import Obj Data
-	sphrThingy = new ObjImport(L"Assets\\testCube.obj", gDevice, true, true);
-
+	sphrThingy = new ObjImport(L"Assets\\shprThingy_01.obj", gDevice, true, true);
 
 
 	// Create Constant Buffer(s)
@@ -339,6 +338,7 @@ void Main::Render()
 	camProjection = XMMatrixPerspectiveFovLH((3.14f*(0.4f)), (640.0f / 480.0f), 0.5f, 1000.0f);
 	WVP = XMMatrixMultiply(World, XMMatrixMultiply(camView, camProjection));
 	cbPerObj.WVP = XMMatrixTranspose(WVP);
+	cbPerObj.hasTexture = false;
 
 	gDeviceContext->UpdateSubresource(gConstantBufferCamera, 0, NULL, &cbPerObj, 0, 0);
 	gDeviceContext->VSSetConstantBuffers(0, 1, &gConstantBufferCamera);
@@ -349,17 +349,14 @@ void Main::Render()
 
 	gDeviceContext->IASetInputLayout(gVertexLayout);
 	gDeviceContext->IASetVertexBuffers(0, 1, &gVertexBuffer, &vertexSize, &offset);
-	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	/*gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy.o_meshVertBuff, &vertexSize, &offset);
-	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);*/
+	gDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 
 	//Set Shaders and texture
 	gDeviceContext->HSSetShader(nullptr, nullptr, 0);
 	gDeviceContext->DSSetShader(nullptr, nullptr, 0);
 	gDeviceContext->VSSetShader(gVertexShader, nullptr, 0);
-	gDeviceContext->GSSetShader(gGeometryShader, nullptr, 0);
+	gDeviceContext->GSSetShader(nullptr, nullptr, 0);
 	gDeviceContext->PSSetShader(gPixelShader, nullptr, 0);
 	//gDeviceContext->PSSetShaderResources(0, 1, &gTextureView);
 
@@ -380,25 +377,27 @@ void Main::Render()
 	{
 		gDeviceContext->IASetIndexBuffer(sphrThingy->o_meshIndexBuff, DXGI_FORMAT_R32_UINT, 0);
 		gDeviceContext->IASetVertexBuffers(0, 1, &sphrThingy->o_meshVertBuff, &vertexSize, &offset);
-
-		/*WVP = sphrThingy->o_meshWorldMTX * camView * camProjection;
-		cbPerObj.WVP = XMMatrixTranspose(WVP);*/
+		/*ID3D11ShaderResourceView* srvTest;
+		CreateWICTextureFromFile(gDevice, gDeviceContext, sphrThingy->o_textureNameArray[i], nullptr, &srvTest);*/
+		/*WVP = sphrThingy->o_meshWorldMTX * camView * camProjection;*/
+		cbPerObj.WVP = XMMatrixTranspose(WVP);
+		cbPerObj.diffuseColor = sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_difColor;
+		cbPerObj.hasTexture = sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_hasTexture;
 		gDeviceContext->UpdateSubresource(gConstantBufferCamera, 0, NULL, &cbPerObj, 0, 0); 
 		gDeviceContext->VSSetConstantBuffers(0, 1, &gConstantBufferCamera);
+		gDeviceContext->PSSetConstantBuffers(0, 1, &gConstantBufferCamera);
+		
+		//Checks if the imported submesh have a texture
+		if (sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_hasTexture)
+			gDeviceContext->PSSetShaderResources(0, 1, &sphrThingy->o_meshSRV[sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_texIndex]);
 		
 		int indexStart = sphrThingy->o_meshGroupIndexStart[i];
-
 		int indexDrawAmount = sphrThingy->o_meshGroupIndexStart[i + 1] - sphrThingy->o_meshGroupIndexStart[i];
 		gDeviceContext->DrawIndexed(indexDrawAmount, indexStart, 0);
 			
-
-
 	}
 
 	
-
-
-
 }
 
 

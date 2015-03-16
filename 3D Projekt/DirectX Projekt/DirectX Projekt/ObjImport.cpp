@@ -1,6 +1,6 @@
 
 #include "ObjImport.h"
-
+//using namespace Microsoft::WRL;
 // --- Initialization of variables for 1 object. EACH .OBJ IMPORT NEEDS A SET OF THESE.
 // !!!!*****!!!! Will ideally be placed in a class later.									!!!!*****!!!!
 
@@ -94,7 +94,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	ID3D11Buffer** iBuff,
 	vector<int>& groupIndexStart,
 	vector<int>& groupMaterialIndex,
-	vector<o_SurfaceMaterial>material,
+	vector<o_SurfaceMaterial>& material,
 	ID3D11Device* device,
 	int& groupCount,
 	bool isRHCoordSys,
@@ -109,7 +109,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	vector<XMFLOAT3>	o_vertPos;
 	vector<XMFLOAT3>	o_vertNorm;
 	vector<XMFLOAT2>	o_texCoord;
-	vector<wstring>		o_materials;
+	vector<wstring>		o_strmaterials;
 	vector<int>			o_vertPosIndex;					//Index Vectors for Position,
 	vector<int>			o_vertNormIndex;				//Normals and
 	vector<int>			o_texCoordIndex;				//Texture Coordinates.
@@ -132,7 +132,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 
 	if (o_fileIn)
 	{
-
+		
 		while (o_fileIn)
 		{
 			wstring lineData;
@@ -276,13 +276,13 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 							bool vertExists = false;
 							for (int indexCheck = 0; indexCheck < o_totalVertices; ++indexCheck)
 							{
-								if (t_vp_f[vertCheck] == o_vertPosIndex[indexCheck] && t_vt_f[vertCheck] == o_texCoordIndex[indexCheck]
-									 && t_vn_f[vertCheck] == o_vertNormIndex[indexCheck] && !vertExists)
-								{
-									o_indices.push_back(vertCheck);
-									vertExists = true;
-									cout << "Found duplicate vertex" << endl;
-								}
+								//if (/*t_vp_f[vertCheck] == o_vertPosIndex[indexCheck] &&*/ /*t_vt_f[vertCheck] == o_texCoordIndex[indexCheck]
+								//	 && t_vn_f[vertCheck] == o_vertNormIndex[indexCheck] &&*/ !vertExists)
+								//{
+								//	o_indices.push_back(indexCheck);
+								//	vertExists = true;
+								//	cout << "Found duplicate vertex" << endl;
+								//}
 							}
 
 							if (!vertExists)
@@ -329,7 +329,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 			{
 				wstring matTemp = L"";
 				matTemp = lineData.erase(0, 7);
-				o_materials.push_back(matTemp);
+				o_strmaterials.push_back(matTemp);
 			}
 
 
@@ -476,6 +476,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 				swscanf_s(mlineData.c_str(), L"Ni %f", &material[mat_count - 1].oM_niOpticalDensity);
 				cout << "Loaded Ni" << endl;
 			}
+
 			else if (mlineData.c_str()[0] == 'm' && mlineData.c_str()[1] == 'a' && mlineData.c_str()[2] == 'p')
 			{
 				if (mlineData.c_str()[4] == 'K' && mlineData.c_str()[5] == 'd')
@@ -495,9 +496,10 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 					}
 					if (!tex_isLoaded)
 					{
-						ID3D11ShaderResourceView* temp_SRV;
-						hr = CreateWICTextureFromFile(device, tex_fileName.c_str(), NULL, &temp_SRV);
-						if (SUCCEEDED(hr))
+						CoInitialize(NULL);
+						ID3D11ShaderResourceView* temp_SRV = nullptr;
+						HRESULT br = CreateWICTextureFromFile(device, tex_fileName.c_str(), nullptr, &temp_SRV);
+						if (SUCCEEDED(br))
 						{
 							o_textureNameArray.push_back(tex_fileName.c_str());
 							material[mat_count - 1].oM_texIndex = o_meshSRV.size();
@@ -526,7 +528,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 		bool matAssigned = false;
 		for (int j = 0; j < material.size(); ++j)
 		{
-			if (o_materials[i] == material[j].oM_materialName)
+			if (o_strmaterials[i] == material[j].oM_materialName)
 			{
 				groupMaterialIndex.push_back(j);
 				matAssigned = true;
@@ -534,6 +536,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 		}
 		if (!matAssigned)
 		{
+
 			groupMaterialIndex.push_back(0);		// This defaults to the first material.
 		}
 	}
@@ -612,7 +615,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	cout << "Looped through " << loops << " faces." << endl;
 	cout << "Total vertices defined: " << o_totalVertices << " and " << o_totalTriangles << " triangles." << endl;
 	wcout << "added mtllib " << o_matLibName.c_str() << endl;
-	wcout << o_materials[0] << endl;
+	wcout << o_strmaterials[0] << endl;
 
 	//Index bufffer
 	D3D11_BUFFER_DESC iBuffDesc;

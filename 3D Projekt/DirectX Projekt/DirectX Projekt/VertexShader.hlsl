@@ -1,6 +1,8 @@
 cbuffer cbPerObject : register(c0)
 {
-	float4x4 WVP;
+	matrix WVP;
+	float4 diffuseColor;
+	bool hasTexture;
 };
 
 struct VS_IN

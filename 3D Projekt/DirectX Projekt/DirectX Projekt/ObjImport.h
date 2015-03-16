@@ -60,7 +60,7 @@ public:
 					ID3D11Buffer** iBuff,
 					vector<int>& groupIndexStart,
 					vector<int>& groupMaterialIndex,
-					vector<o_SurfaceMaterial>material,
+					vector<o_SurfaceMaterial>&material,
 					ID3D11Device* device,
 					int& groupCount,
 					bool isRHCoordSys,
