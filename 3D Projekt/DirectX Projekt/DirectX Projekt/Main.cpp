@@ -50,7 +50,6 @@ HRESULT Main::CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ L
 	return hr;
 }
 
-
 void Main::CreateShaders()
 {
 
@@ -112,7 +111,6 @@ bool Main::InitDirectInput(HINSTANCE hInstance)
 
 	return true;
 }
- 
  
 void Main::UpdateCamera()
 {
@@ -195,8 +193,6 @@ void Main::DetectInput()
 
 	return;
 }
-
-
 
 void Main::FpsCounter()
 {
@@ -293,7 +289,6 @@ void Main::CreateBuffers()
 
 }
 
-
 void Main::SetViewport()
 {
 	D3D11_VIEWPORT vp;
@@ -317,8 +312,6 @@ void Main::Update()
 
 
 }
-
-
 
 void Main::Render()
 {
@@ -400,7 +393,6 @@ void Main::Render()
 
 	
 }
-
 
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
@@ -506,9 +498,6 @@ LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-
-
-
 HRESULT Main::CreateDirect3DContext(HWND wndHandle)
 {
 	//create a struct to hold inforamtion about the swap chain
@@ -607,9 +596,6 @@ Main::Main()
 
 	mainName = this;
 }
-
-
-
 
 Main::~Main()
 {
