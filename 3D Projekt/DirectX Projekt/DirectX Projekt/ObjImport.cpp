@@ -129,6 +129,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 	int o_totalVertices = 0;
 	int o_totalTriangles = 0;
 
+	
 
 	if (o_fileIn)
 	{
@@ -396,6 +397,7 @@ bool ObjImport::o_OBJIMPORT(wstring o_fileName,
 				material[mat_count].oM_materialName = tempMatName;
 				material[mat_count].oM_isTransparent = false;
 				material[mat_count].oM_texIndex = 0;
+				material[mat_count].oM_hasTexture = false;
 				wcout << "Created new material: " << material[mat_count].oM_materialName << endl;
 				mat_count++;
 				mat_kDset = false;

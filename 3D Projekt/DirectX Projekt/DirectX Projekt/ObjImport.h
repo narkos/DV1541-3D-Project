@@ -30,6 +30,18 @@ struct o_SurfaceMaterial
 	int									oM_texIndex;
 	bool								oM_hasTexture;
 	bool								oM_isTransparent;
+	//~o_SurfaceMaterial();
+	/*o_SurfaceMaterial()
+	{
+		oM_materialName;
+		oM_difColor;
+		oM_trFilter;
+		oM_specColor;
+		oM_niOpticalDensity;
+		oM_texIndex;
+		oM_hasTexture;
+		oM_isTransparent;
+	}*/
 };
 
 

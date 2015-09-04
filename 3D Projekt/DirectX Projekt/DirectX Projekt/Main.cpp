@@ -50,7 +50,6 @@ HRESULT Main::CompileShader(_In_ LPCWSTR srcFile, _In_ LPCSTR entryPoint, _In_ L
 	return hr;
 }
 
-
 void Main::CreateShaders()
 {
 
@@ -112,7 +111,6 @@ bool Main::InitDirectInput(HINSTANCE hInstance)
 
 	return true;
 }
- 
  
 void Main::UpdateCamera()
 {
@@ -196,8 +194,6 @@ void Main::DetectInput()
 	return;
 }
 
-
-
 void Main::FpsCounter()
 {
 	
@@ -278,7 +274,7 @@ void Main::CreateBuffers()
 	gDevice->CreateBuffer(&vBufferDesc, &data, &gVertexBuffer);
 
 	// Import Obj Data
-	sphrThingy = new ObjImport(L"Assets\\shprThingy_01.obj", gDevice, true, true);
+	sphrThingy = new ObjImport(L"Assets\\testCube.obj", gDevice, true, true);
 
 
 	// Create Constant Buffer(s)
@@ -292,7 +288,6 @@ void Main::CreateBuffers()
 	gDevice->CreateBuffer(&cBufferDesc, NULL, &gConstantBufferCamera);
 
 }
-
 
 void Main::SetViewport()
 {
@@ -317,8 +312,6 @@ void Main::Update()
 
 
 }
-
-
 
 void Main::Render()
 {
@@ -388,9 +381,10 @@ void Main::Render()
 		gDeviceContext->PSSetConstantBuffers(0, 1, &gConstantBufferCamera);
 		
 		//Checks if the imported submesh have a texture
-		if (sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_hasTexture)
+		if (sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_hasTexture == true)
+		{
 			gDeviceContext->PSSetShaderResources(0, 1, &sphrThingy->o_meshSRV[sphrThingy->o_materials[sphrThingy->o_meshGroupTexture[i]].oM_texIndex]);
-		
+		}
 		int indexStart = sphrThingy->o_meshGroupIndexStart[i];
 		int indexDrawAmount = sphrThingy->o_meshGroupIndexStart[i + 1] - sphrThingy->o_meshGroupIndexStart[i];
 		gDeviceContext->DrawIndexed(indexDrawAmount, indexStart, 0);
@@ -399,7 +393,6 @@ void Main::Render()
 
 	
 }
-
 
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
@@ -505,9 +498,6 @@ LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-
-
-
 HRESULT Main::CreateDirect3DContext(HWND wndHandle)
 {
 	//create a struct to hold inforamtion about the swap chain
@@ -606,9 +596,6 @@ Main::Main()
 
 	mainName = this;
 }
-
-
-
 
 Main::~Main()
 {

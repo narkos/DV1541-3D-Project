@@ -5,30 +5,16 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX Projekt", "DirectX Projekt\DirectX Projekt.vcxproj", "{32770413-3739-4D66-AC70-2B2DB1422A2E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK_Desktop_2013", "DirectX Projekt\DirectXTK\DirectXTK_Desktop_2013.vcxproj", "{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
-		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
-		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Debug|Win32.Build.0 = Debug|Win32
-		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Debug|x64.ActiveCfg = Debug|Win32
 		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Release|Win32.ActiveCfg = Release|Win32
 		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Release|Win32.Build.0 = Release|Win32
-		{32770413-3739-4D66-AC70-2B2DB1422A2E}.Release|x64.ActiveCfg = Release|Win32
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Debug|Win32.Build.0 = Debug|Win32
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Debug|x64.ActiveCfg = Debug|x64
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Debug|x64.Build.0 = Debug|x64
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|Win32.ActiveCfg = Release|Win32
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|Win32.Build.0 = Release|Win32
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x64.ActiveCfg = Release|x64
-		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
